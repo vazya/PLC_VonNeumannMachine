@@ -158,47 +158,27 @@ void CInterpreter::createDECRegs( const vector<string>& tokens )
 
 void CInterpreter::createJMPRegs( const vector<string>& tokens )
 {
-	//cout << "VZ jmp" << endl;
-	CRegs( 7, 0, 0, 0, 0 );
+	assert( false );
 }
 
 void CInterpreter::createCALLRegs( const vector<string>& tokens )
 {
-	//cout << "VZ call" << endl;
-	if( tokens.size() > 4 ) {
-		cout << "VZ createCALLRegs get more than 1 token" << endl;
-		assert( false );
-	}
-	CRegs( 8, 0, 0, 0, 0 );
+	assert( false );
 }
 
 void CInterpreter::createRETRegs( const vector<string>& tokens )
 {
-	//cout << "VZ ret" << endl;
-	if( tokens.size() > 1 ) {
-		cout << "VZ createRETRegs get more than 1 token" << endl;
-		assert( false );
-	}
-	CRegs( 9, 0, 0, 0, 0 );
+	assert( false );
 }
 
 void CInterpreter::createLABELRegs( const vector<string>& tokens )
 {
-	//cout << "VZ label" << endl;
-	if( tokens.size() > 1 ) {
-		cout << "VZ createLABELRegs get more than 1 token" << endl;
-		assert( false );
-	}
-	CRegs( 10, 0, 0, 0, 0 );
+	assert( false );
 }
 
 void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 {
-	//cout << "VZ stop" << endl;
-	if( tokens.size() > 1 ) {
-		cout << "VZ createSTOPRegs get more than 1 token" << endl;
-		assert( false );
-	}
-	CRegs( 15, 0, 0, 0, 0 );
+	assert( tokens.size() == 1 );
+	code.push_back( CRegs( 15, 0, 0, 0, 0 ) );
 }
 

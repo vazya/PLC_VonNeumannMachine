@@ -5,3 +5,4 @@ in 7
 out 7
 inc 3
 dec 4
+stop
