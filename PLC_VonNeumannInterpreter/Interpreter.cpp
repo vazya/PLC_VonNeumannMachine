@@ -1,5 +1,12 @@
 #include "Interpreter.h"
 
+void CInterpreter::printProgramm()
+{
+	for( int i = 0; i < code.size(); i++ ) {
+		code[i].print();
+	}
+}
+
 void CInterpreter::writeProgramm( const string & path )
 {
 }
@@ -13,12 +20,13 @@ void CInterpreter::readProgramm( const string & path )
 	while( getline( file, line ) ) {
 		if( !line.empty() ) {
 			programm.push_back( line );
-			cout << line << endl;
 			parseCommand( line );
 		}
 	}
 	file.close();
 	cout << "VZ programm.size = " << programm.size() << endl;
+	cout << "VZ code.size = " << code.size() << endl;
+	printProgramm();
 }
 
 void CInterpreter::parseCommand( const string & line )
@@ -42,149 +50,153 @@ void CInterpreter::parseCommand( const string & line )
 		}
 		counter++;
 	}
-	code.push_back( createRegs( tokens ) );
+	createRegs( tokens );
 }
 
-const CRegs& CInterpreter::createRegs( const vector<string>& tokens )
+void CInterpreter::createRegs( const vector<string>& tokens )
 {
 	if( tokens.empty() ) {
 		assert( false );
 	} else {
 		if( tokens[0] == string( "ip" ) || tokens[0] == string( "IP" ) ) {
-			return createIPRegs( tokens );
+			createIPRegs( tokens );
 		}
 		if( tokens[0] == string( "mov" ) || tokens[0] == string( "MOV" ) ) {
-			return createMOVRegs( tokens );
+			createMOVRegs( tokens );
+		}
+		if( tokens[0] == string( "set" ) || tokens[0] == string( "SET" ) ) {
+			createSETRegs( tokens );
 		}
 		if( tokens[0] == string( "in" ) || tokens[0] == string( "IN" ) ) {
-			return createINRegs( tokens );
+			createINRegs( tokens );
 		}
 		if( tokens[0] == string( "out" ) || tokens[0] == string( "OUT" ) ) {
-			return createOUTRegs( tokens );
+			createOUTRegs( tokens );
 		}
 		if( tokens[0] == string( "inc" ) || tokens[0] == string( "INC" ) ) {
-			return createINCRegs( tokens );
+			createINCRegs( tokens );
 		}
 		if( tokens[0] == string( "dec" ) || tokens[0] == string( "DEC" ) ) {
-			return createDECRegs( tokens );
+			createDECRegs( tokens );
 		}
 		if( tokens[0] == string( "jmp" ) || tokens[0] == string( "JMP" ) ) {
-			return createJMPRegs( tokens );
+			createJMPRegs( tokens );
 		}
 		if( tokens[0] == string( "call" ) || tokens[0] == string( "CALL" ) ) {
-			return createCALLRegs( tokens );
+			createCALLRegs( tokens );
 		}
 		if( tokens[0] == string( "ret" ) || tokens[0] == string( "RET" ) ) {
-			return createRETRegs( tokens );
+			createRETRegs( tokens );
 		}
 		if( tokens[0] == string( "label" ) || tokens[0] == string( "LABEL" ) ) {
-			return createLABELRegs( tokens );
+			createLABELRegs( tokens );
 		}
 		if( tokens[0] == string( "stop" ) || tokens[0] == string( "STOP" ) ) {
-			return createSTOPRegs( tokens );
+			createSTOPRegs( tokens );
 		}
 
 	}
-	cout << "VZ undefined command = " << tokens[0] << endl;
-	return CRegs();
+	//cout << "VZ undefined command = " << tokens[0] << endl;
 }
 
-const CRegs& CInterpreter::createIPRegs( const vector<string>& tokens )
+void CInterpreter::createIPRegs( const vector<string>& tokens )
 {
-	//cout << "VZ IP" << endl;
-	CRegs( 1, 0, 0, 0 );
-	return CRegs();
+	assert( tokens.size() == 2 );
+	unsigned int p = std::stoi( tokens[1] );
+	if( p > 255 ) {
+		p = 255;
+	}
+	code.push_back( CRegs( 1, 0, 0, 0, p ) );
+	for( int i = 0; i < p; i++ ) {
+		code.push_back( CRegs() );
+	}
 }
 
-const CRegs& CInterpreter::createMOVRegs( const vector<string>& tokens )
+void CInterpreter::createMOVRegs( const vector<string>& tokens )
 {
-	//cout << "VZ mov" << endl;
-	CRegs( 2, 0, 0, 0 );
-	return CRegs();
+	assert( tokens.size() == 3 );
+	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int src = std::stoi( tokens[2] );
+	code.push_back( CRegs( 2, 0, dst, 0, src ) );
 }
 
-const CRegs& CInterpreter::createINRegs( const vector<string>& tokens )
+void CInterpreter::createSETRegs( const vector<string>& tokens )
 {
-	//cout << "VZ in" << endl;
-	CRegs( 3, 0, 0, 0 );
-	return CRegs();
+	assert( tokens.size() == 3 );
+	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int src = std::stoi( tokens[2] );
+	code.push_back( CRegs( 3, 0, dst, 0, src ) );
 }
 
-const CRegs& CInterpreter::createOUTRegs( const vector<string>& tokens )
+void CInterpreter::createINRegs( const vector<string>& tokens )
 {
-	//cout << "VZ out" << endl;
-	CRegs( 4, 0, 0, 0 );
-	return CRegs();
+	assert( tokens.size() == 2 );
+	unsigned int arg = std::stoi( tokens[1] );
+	code.push_back( CRegs( 4, 0, 0, 0, arg ) );
 }
 
-const CRegs& CInterpreter::createINCRegs( const vector<string>& tokens )
+void CInterpreter::createOUTRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 2 );
+	unsigned int src = std::stoi( tokens[1] );
+	code.push_back( CRegs( 5, 0, 0, 0, src ) );
+}
+
+void CInterpreter::createINCRegs( const vector<string>& tokens )
 {
 	//cout << "VZ inc" << endl;
-	CRegs( 5, 0, 0, 0 );
-	return CRegs();
+	CRegs( 5, 0, 0, 0, 0 );
 }
 
-
-const CRegs& CInterpreter::createDECRegs( const vector<string>& tokens )
+void CInterpreter::createDECRegs( const vector<string>& tokens )
 {
 	//cout << "VZ dec" << endl;
-	CRegs( 6, 0, 0, 0 );
-	return CRegs();
+	CRegs( 6, 0, 0, 0, 0 );
 }
 
-
-const CRegs& CInterpreter::createJMPRegs( const vector<string>& tokens )
+void CInterpreter::createJMPRegs( const vector<string>& tokens )
 {
 	//cout << "VZ jmp" << endl;
-	CRegs( 7, 0, 0, 0 );
-	return CRegs();
+	CRegs( 7, 0, 0, 0, 0 );
 }
 
-
-const CRegs& CInterpreter::createCALLRegs( const vector<string>& tokens )
+void CInterpreter::createCALLRegs( const vector<string>& tokens )
 {
 	//cout << "VZ call" << endl;
 	if( tokens.size() > 4 ) {
 		cout << "VZ createCALLRegs get more than 1 token" << endl;
 		assert( false );
 	}
-	CRegs( 8, 0, 0, 0 );
-	return CRegs();
+	CRegs( 8, 0, 0, 0, 0 );
 }
 
-
-const CRegs& CInterpreter::createRETRegs( const vector<string>& tokens )
+void CInterpreter::createRETRegs( const vector<string>& tokens )
 {
 	//cout << "VZ ret" << endl;
 	if( tokens.size() > 1 ) {
 		cout << "VZ createRETRegs get more than 1 token" << endl;
 		assert( false );
 	}
-	CRegs( 9, 0, 0, 0 );
-	return CRegs();
+	CRegs( 9, 0, 0, 0, 0 );
 }
 
-
-const CRegs& CInterpreter::createLABELRegs( const vector<string>& tokens )
+void CInterpreter::createLABELRegs( const vector<string>& tokens )
 {
 	//cout << "VZ label" << endl;
 	if( tokens.size() > 1 ) {
 		cout << "VZ createLABELRegs get more than 1 token" << endl;
 		assert( false );
 	}
-	CRegs( 10, 0, 0, 0 );
-	return CRegs();
+	CRegs( 10, 0, 0, 0, 0 );
 }
 
-
-const CRegs& CInterpreter::createSTOPRegs( const vector<string>& tokens )
+void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 {
 	//cout << "VZ stop" << endl;
 	if( tokens.size() > 1 ) {
 		cout << "VZ createSTOPRegs get more than 1 token" << endl;
 		assert( false );
 	}
-	CRegs( 15, 0, 0, 0 );
-	return CRegs();
+	CRegs( 15, 0, 0, 0, 0 );
 }
 
