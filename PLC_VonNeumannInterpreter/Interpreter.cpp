@@ -131,8 +131,8 @@ void CInterpreter::createSETRegs( const vector<string>& tokens )
 void CInterpreter::createINRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
-	unsigned int arg = std::stoi( tokens[1] );
-	code.push_back( CRegs( 4, 0, 0, 0, arg ) );
+	unsigned int dst = std::stoi( tokens[1] );
+	code.push_back( CRegs( 4, 0, 0, 0, dst ) );
 }
 
 void CInterpreter::createOUTRegs( const vector<string>& tokens )
@@ -144,14 +144,16 @@ void CInterpreter::createOUTRegs( const vector<string>& tokens )
 
 void CInterpreter::createINCRegs( const vector<string>& tokens )
 {
-	//cout << "VZ inc" << endl;
-	CRegs( 5, 0, 0, 0, 0 );
+	assert( tokens.size() == 2 );
+	unsigned int dst = std::stoi( tokens[1] );
+	code.push_back( CRegs( 6, 0, 0, 0, dst ) );
 }
 
 void CInterpreter::createDECRegs( const vector<string>& tokens )
 {
-	//cout << "VZ dec" << endl;
-	CRegs( 6, 0, 0, 0, 0 );
+	assert( tokens.size() == 2 );
+	unsigned int dst = std::stoi( tokens[1] );
+	code.push_back( CRegs( 7, 0, 0, 0, dst ) );
 }
 
 void CInterpreter::createJMPRegs( const vector<string>& tokens )
