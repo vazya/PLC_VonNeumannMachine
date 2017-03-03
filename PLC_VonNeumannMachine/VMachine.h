@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cassert>
 using namespace std;
 
 // четрые €чейки вида 01 23 34 56 78
@@ -31,13 +32,36 @@ private:
 
 class CVMachine {
 public:
+	CVMachine() : current( 0 ) {};
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
 	// выводит в консоль код
 	void printProgramm();
 	// пишет байт-код программы в файл
 	void writeProgramm( const string& path );
+	void parseCommand( const string& line );
+	void createRegs( const vector<unsigned int>& tokens );
+
+protected:
+	void processIPRegs( const vector<unsigned int>& tokens );
+	void processMOVRegs( const vector<unsigned int>& tokens );
+	void processSETRegs( const vector<unsigned int>& tokens );
+	void processINRegs( const vector<unsigned int>& tokens );
+	void processOUTRegs( const vector<unsigned int>& tokens );
+	void processINCRegs( const vector<unsigned int>& tokens );
+	void processDECRegs( const vector<unsigned int>& tokens );
+	void processADDRegs( const vector<unsigned int>& tokens );
+	void processSUBRegs( const vector<unsigned int>& tokens );
+
+	//void createJMPRegs( const vector<string>& tokens );
+	//void createCALLRegs( const vector<string>& tokens );
+	//void createRETRegs( const vector<string>& tokens );
+	//void createLABELRegs( const vector<string>& tokens );
+
+	void processSTOPRegs( const vector<unsigned int>& tokens );
 
 private:
+	// номер текущей команды
+	unsigned int current;
 	vector<CRegs> code;
 };
