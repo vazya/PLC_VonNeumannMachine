@@ -52,6 +52,7 @@ public:
 	void printCurrent() { cout << "current = " << current << endl; }
 	void writeProgramm( const string& path );
 	void parseCommand( const string& line );
+	// наивная проверка указателей
 	void check( unsigned int arg ) { assert( 0 <= arg ); assert( arg < code.size() ); }
 protected:
 	void processRegs( CRegs& regs );

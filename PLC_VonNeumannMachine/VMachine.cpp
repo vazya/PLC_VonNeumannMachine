@@ -8,6 +8,7 @@ void CVMachine::printProgramm()
 		code[i].print();
 	}
 	printCurrent();
+	cout << "code.size = " << code.size() << endl;
 }
 
 void CVMachine::writeProgramm( const string & path )
@@ -146,7 +147,9 @@ void CVMachine::processSETRegs( CRegs& regs )
 	unsigned int dst = regs.getDST();
 	unsigned int src = regs.getSRC();
 	check( dst );
+
 	code[dst].setSRC( src );
+
 	cout << "processSETRegs ";
 	printCurrent();
 	current++;
@@ -170,8 +173,10 @@ void CVMachine::processINCRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
+
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC(data + 1);
+
 	cout << "processINCRegs ";
 	printCurrent();
 	current++;
@@ -181,8 +186,10 @@ void CVMachine::processDECRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
+
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC( data - 1 );
+
 	cout << "processDECRegs ";
 	printCurrent();
 	current++;
@@ -190,6 +197,15 @@ void CVMachine::processDECRegs( CRegs& regs )
 
 void CVMachine::processADDRegs( CRegs& regs )
 {
+	unsigned int dst = regs.getDST();
+	check( dst );
+	unsigned int src = regs.getSRC();
+	check( src );
+
+	unsigned int dstData = code[dst].getSRC();
+	unsigned int srcData = code[src].getSRC();
+	code[dst].setSRC( dstData + srcData );
+
 	cout << "processADDRegs ";
 	printCurrent();
 	current++;
@@ -197,6 +213,15 @@ void CVMachine::processADDRegs( CRegs& regs )
 
 void CVMachine::processSUBRegs( CRegs& regs )
 {
+	unsigned int dst = regs.getDST();
+	check( dst );
+	unsigned int src = regs.getSRC();
+	check( src );
+
+	unsigned int dstData = code[dst].getSRC();
+	unsigned int srcData = code[src].getSRC();
+	code[dst].setSRC( dstData - srcData );
+
 	cout << "processSUBRegs ";
 	printCurrent();
 	current++;
