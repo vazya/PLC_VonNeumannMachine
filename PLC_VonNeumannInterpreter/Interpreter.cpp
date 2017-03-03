@@ -3,6 +3,8 @@
 void CInterpreter::printProgramm()
 {
 	for( int i = 0; i < code.size(); i++ ) {
+		cout.width( 2 );
+		cout << i << " : ";
 		code[i].print();
 	}
 }
@@ -144,8 +146,8 @@ void CInterpreter::createSETRegs( const vector<string>& tokens )
 void CInterpreter::createINRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
-	unsigned int dst = std::stoi( tokens[1] );
-	code.push_back( CRegs( 4, 0, 0, 0, dst ) );
+	unsigned int src = std::stoi( tokens[1] );
+	code.push_back( CRegs( 4, 0, 0, 0, src ) );
 }
 
 void CInterpreter::createOUTRegs( const vector<string>& tokens )
@@ -185,14 +187,17 @@ void CInterpreter::createSUBRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 9, 0, dst, 0, src ) );
 }
 
-
-
-
-
 void CInterpreter::createJMPRegs( const vector<string>& tokens )
 {
-	assert( false );
+	assert( tokens.size() == 2 );
+	unsigned int src = std::stoi( tokens[1] );
+	code.push_back( CRegs( 11, 0, 0, 0, src ) );
 }
+
+
+
+
+
 
 void CInterpreter::createCALLRegs( const vector<string>& tokens )
 {

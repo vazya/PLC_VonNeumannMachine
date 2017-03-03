@@ -56,7 +56,7 @@ public:
 	void check( unsigned int arg ) { assert( 0 <= arg ); assert( arg < code.size() ); }
 protected:
 	void processRegs( CRegs& regs );
-	//void processVARRegs( const vector<unsigned int>& tokens );
+	void processVARRegs( CRegs& regs );
 	void processIPRegs( CRegs& regs );
 	void processMOVRegs( CRegs& regs );
 	void processSETRegs( CRegs& regs );
@@ -66,8 +66,8 @@ protected:
 	void processDECRegs( CRegs& regs );
 	void processADDRegs( CRegs& regs );
 	void processSUBRegs( CRegs& regs );
+	void processJMPRegs( CRegs& regs );
 
-	//void createJMPRegs( const vector<string>& tokens );
 	//void createCALLRegs( const vector<string>& tokens );
 	//void createRETRegs( const vector<string>& tokens );
 	//void createLABELRegs( const vector<string>& tokens );

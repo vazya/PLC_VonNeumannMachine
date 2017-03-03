@@ -70,6 +70,9 @@ void CVMachine::processProgramm()
 void CVMachine::processRegs( CRegs& regs )
 {
 	unsigned int cmd = regs.getCMD();
+	if( cmd == 0 ) {
+		processVARRegs( regs );
+	}
 	if( cmd == 1 ) {
 		processIPRegs( regs );
 	}
@@ -97,28 +100,19 @@ void CVMachine::processRegs( CRegs& regs )
 	if( cmd == 9 ) {
 		processSUBRegs( regs );
 	}
-	//if( tokens[0] == string( "jmp" ) || tokens[0] == string( "JMP" ) ) {
-	//	processJMPRegs( tokens );
-	//}
-	//if( tokens[0] == string( "call" ) || tokens[0] == string( "CALL" ) ) {
-	//	processCALLRegs( tokens );
-	//}
-	//if( tokens[0] == string( "ret" ) || tokens[0] == string( "RET" ) ) {
-	//	processRETRegs( tokens );
-	//}
-	//if( tokens[0] == string( "label" ) || tokens[0] == string( "LABEL" ) ) {
-	//	processLABELRegs( tokens );
-	//}
+	if( cmd == 11 ) {
+		processJMPRegs( regs );
+	}
 	if( cmd == 15 ) {
 		processSTOPRegs( regs );
 	}
 }
 
-//void CVMachine::processVARRegs( const vector<unsigned int>& tokens )
-//{
-//	assert( tokens[0] == 0 );
-//	code.push_back( CRegs( tokens[0], tokens[1], tokens[2], tokens[3], tokens[4] ) );
-//}
+void CVMachine::processVARRegs( CRegs& regs )
+{
+	cout << "programm reach vars" << endl;
+	processSTOPRegs( regs );
+}
 
 void CVMachine::processIPRegs( CRegs& regs )
 {
@@ -240,6 +234,17 @@ void CVMachine::processSUBRegs( CRegs& regs )
 	cout << "processSUBRegs ";
 	printCurrent();
 	current++;
+}
+
+void CVMachine::processJMPRegs( CRegs& regs )
+{
+	unsigned int src = regs.getSRC();
+	check( src );
+
+	cout << "processSUBRegs ";
+	printCurrent();
+
+	current = src;
 }
 
 void CVMachine::processSTOPRegs( CRegs& regs )
