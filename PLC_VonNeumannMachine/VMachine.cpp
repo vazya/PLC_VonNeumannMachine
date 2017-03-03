@@ -3,10 +3,11 @@
 void CVMachine::printProgramm()
 {
 	for( int i = 0; i < code.size(); i++ ) {
+		cout.width( 2 );
 		cout << i << " : ";
 		code[i].print();
 	}
-	cout << "VZ current = " << current << endl;
+	printCurrent();
 }
 
 void CVMachine::writeProgramm( const string & path )
@@ -30,7 +31,6 @@ void CVMachine::readProgramm( const string & path )
 		}
 	}
 	file.close();
-	cout << "VZ code.size = " << code.size() << endl;
 }
 
 void CVMachine::parseCommand( const string & line )
@@ -60,10 +60,6 @@ void CVMachine::createRegs( const vector<unsigned int>& tokens )
 {
 	assert( tokens.size() == 5 );
 	code.push_back( CRegs( tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]) );
-	if( tokens[0] == 0 ) {
-		cout << "VM reach nullptr" << endl;
-		//assert( false );
-	}
 	if( tokens[0] == 1 ) {
 		processIPRegs( tokens );
 	}
@@ -112,6 +108,8 @@ void CVMachine::processIPRegs( const vector<unsigned int>& tokens )
 {
 	unsigned int src = tokens[4];
 	current += src;
+	cout << "processIPRegs ";
+	printCurrent();
 }
 
 void CVMachine::processMOVRegs( const vector<unsigned int>& tokens )

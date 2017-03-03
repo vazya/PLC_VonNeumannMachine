@@ -11,10 +11,12 @@ class CRegs {
 public:
 	CRegs() : cmd( 0 ), src1( 0 ), src2( 0 ), dst1( 0 ), dst2( 0 ) {}
 	CRegs( unsigned int c, unsigned int s1, unsigned int s2, unsigned int d1, unsigned int d2 ) :
-		cmd( c ), src1( s1 ), src2( s2 ), dst1( d1 ), dst2( d2 )
-	{
+		cmd( c ), src1( s1 ), src2( s2 ), dst1( d1 ), dst2( d2 ) {}
+	void print() 
+	{ 
+		cout.width( 2 );
+		cout << cmd << " " << src1 << " " << src2 << " " << dst1 << " " << dst2 << endl; 
 	}
-	void print() { cout << cmd << " " << src1 << " " << src2 << " " << dst1 << " " << dst2 << endl; }
 	void fprint( const ofstream& fout ) { const_cast<ofstream&>(fout) << cmd << " " << src1 << " " << src2 << " " << dst1 << " " << dst2 << endl; }
 private:
 	// ** 00 00 00 00 кодируют команду
@@ -32,12 +34,13 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : current( 0 ) {};
+	CVMachine() : current( 0 ) { cout << "CVMachine ";  printCurrent(); };
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
 	// выводит в консоль код
 	void printProgramm();
 	// пишет байт-код программы в файл
+	void printCurrent() { cout << "current = " << current << endl; }
 	void writeProgramm( const string& path );
 	void parseCommand( const string& line );
 	void createRegs( const vector<unsigned int>& tokens );
