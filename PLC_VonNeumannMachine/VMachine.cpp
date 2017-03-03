@@ -120,6 +120,7 @@ void CVMachine::processRegs( CRegs& regs )
 void CVMachine::processIPRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
+	check( src );
 	cout << "processIPRegs ";
 	printCurrent();
 	current += src + 1;
@@ -127,6 +128,14 @@ void CVMachine::processIPRegs( CRegs& regs )
 
 void CVMachine::processMOVRegs( CRegs& regs )
 {
+	unsigned int dst = regs.getDST();
+	check( dst );
+	unsigned int src = regs.getSRC();
+	check( src );
+	
+	unsigned int data = code[src].getSRC();
+	code[dst].setSRC( data );
+
 	cout << "processMOVRegs ";
 	printCurrent();
 	current++;
@@ -136,8 +145,7 @@ void CVMachine::processSETRegs( CRegs& regs )
 {
 	unsigned int dst = regs.getDST();
 	unsigned int src = regs.getSRC();
-	assert( 0 < dst );
-	assert( dst < code.size() );
+	check( dst );
 	code[dst].setSRC( src );
 	cout << "processSETRegs ";
 	printCurrent();
@@ -185,8 +193,6 @@ void CVMachine::processSUBRegs( CRegs& regs )
 	printCurrent();
 	current++;
 }
-
-
 
 void CVMachine::processSTOPRegs( CRegs& regs )
 {

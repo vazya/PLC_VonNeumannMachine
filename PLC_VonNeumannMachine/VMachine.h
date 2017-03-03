@@ -6,6 +6,7 @@
 #include <cassert>
 using namespace std;
 
+
 // четрые €чейки вида 01 23 34 56 78
 class CRegs {
 public:
@@ -51,7 +52,7 @@ public:
 	void printCurrent() { cout << "current = " << current << endl; }
 	void writeProgramm( const string& path );
 	void parseCommand( const string& line );
-
+	void check( unsigned int arg ) { assert( 0 <= arg ); assert( arg < code.size() ); }
 protected:
 	void processRegs( CRegs& regs );
 	//void processVARRegs( const vector<unsigned int>& tokens );
