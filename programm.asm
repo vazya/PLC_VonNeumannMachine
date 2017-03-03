@@ -5,5 +5,5 @@ mov 3 2
 in 7
 out 3
 inc 4
-dec 3
+dec 2
 stop

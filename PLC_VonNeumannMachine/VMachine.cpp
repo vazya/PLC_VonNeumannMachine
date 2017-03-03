@@ -168,6 +168,10 @@ void CVMachine::processOUTRegs( CRegs& regs )
 
 void CVMachine::processINCRegs( CRegs& regs )
 {
+	unsigned int src = regs.getSRC();
+	check( src );
+	unsigned int data = code[src].getSRC();
+	code[src].setSRC(data + 1);
 	cout << "processINCRegs ";
 	printCurrent();
 	current++;
@@ -175,6 +179,10 @@ void CVMachine::processINCRegs( CRegs& regs )
 
 void CVMachine::processDECRegs( CRegs& regs )
 {
+	unsigned int src = regs.getSRC();
+	check( src );
+	unsigned int data = code[src].getSRC();
+	code[src].setSRC( data - 1 );
 	cout << "processDECRegs ";
 	printCurrent();
 	current++;
