@@ -46,17 +46,34 @@
 
 			
 			
-ip 12
-mov 3 5
-set 2 4
+ip 8
+set 1 1
+set 2 2
+mov 3 2
 in 7
-out 7
-inc 3
-dec 4
-add 4 5
-sub 4 5
-stop			
-			
+out 3
+inc 4
+dec 1
+add 3 2
+sub 3 4
+stop
+
+ip 8
+set 1 1
+set 2 1
+set 3 0
+add 3 1
+add 3 2
+mov 1 2
+mov 2 3
+set 3 0
+add 3 1
+add 3 2
+mov 1 2
+mov 2 3
+out 3
+stop
+		
 			
 [00] 0 nothing  // пустая строчка
 [01] 1 ip 12// сдвинуться на 12 строчек создает одну строчку 01 00 00 12

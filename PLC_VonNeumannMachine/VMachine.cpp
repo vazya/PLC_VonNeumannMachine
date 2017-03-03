@@ -62,6 +62,8 @@ void CVMachine::processProgramm()
 {
 	while( !stop ) {
 		processRegs( code[current] );
+		printProgramm();
+		system( "pause" );
 	}
 }
 
@@ -157,6 +159,13 @@ void CVMachine::processSETRegs( CRegs& regs )
 
 void CVMachine::processINRegs( CRegs& regs )
 {
+	unsigned int src = regs.getSRC();
+	
+	unsigned int data = 0;
+	cout << "enter number ples = ";
+	cin >> data;
+	code[src].setSRC( data );
+
 	cout << "processINRegs ";
 	printCurrent();
 	current++;
@@ -164,6 +173,12 @@ void CVMachine::processINRegs( CRegs& regs )
 
 void CVMachine::processOUTRegs( CRegs& regs )
 {
+	unsigned int src = regs.getSRC();
+	check( src );
+
+	unsigned int data = code[src].getSRC();
+	cout << data << endl;
+
 	cout << "processOUTRegs ";
 	printCurrent();
 	current++;
