@@ -1,4 +1,6 @@
-ip 12
+ip 8
+set 1 1
+set 2 1
 mov 3 5
 set 2 4
 in 7

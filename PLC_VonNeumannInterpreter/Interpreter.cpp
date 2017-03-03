@@ -9,6 +9,12 @@ void CInterpreter::printProgramm()
 
 void CInterpreter::writeProgramm( const string & path )
 {
+	// пока что закостылим на обычный файл
+	ofstream fout(path);
+	for( int i = 0; i < code.size(); i++ ) {
+		code[i].fprint( fout );
+	}
+	fout.close();
 }
 
 void CInterpreter::readProgramm( const string & path )
@@ -78,6 +84,12 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		}
 		if( tokens[0] == string( "dec" ) || tokens[0] == string( "DEC" ) ) {
 			createDECRegs( tokens );
+		}
+		if( tokens[0] == string( "add" ) || tokens[0] == string( "ADD" ) ) {
+			createADDRegs( tokens );
+		}
+		if( tokens[0] == string( "sub" ) || tokens[0] == string( "SUB" ) ) {
+			createSUBRegs( tokens );
 		}
 		if( tokens[0] == string( "jmp" ) || tokens[0] == string( "JMP" ) ) {
 			createJMPRegs( tokens );
@@ -155,6 +167,26 @@ void CInterpreter::createDECRegs( const vector<string>& tokens )
 	unsigned int dst = std::stoi( tokens[1] );
 	code.push_back( CRegs( 7, 0, 0, 0, dst ) );
 }
+
+void CInterpreter::createADDRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 3 );
+	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int src = std::stoi( tokens[2] );
+	code.push_back( CRegs( 8, 0, dst, 0, src ) );
+}
+
+void CInterpreter::createSUBRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 3 );
+	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int src = std::stoi( tokens[2] );
+	code.push_back( CRegs( 9, 0, dst, 0, src ) );
+}
+
+
+
+
 
 void CInterpreter::createJMPRegs( const vector<string>& tokens )
 {
