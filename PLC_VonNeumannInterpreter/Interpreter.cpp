@@ -105,6 +105,7 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		}
 		if( tokens[0] == string( "stop" ) || tokens[0] == string( "STOP" ) ) {
 			createSTOPRegs( tokens );
+			return;
 		}
 
 	}

@@ -53,39 +53,46 @@ void CVMachine::parseCommand( const string & line )
 		}
 		counter++;
 	}
-	createRegs( tokens );
+	assert( tokens.size() == 5 );
+	code.push_back( CRegs( tokens[0], tokens[1], tokens[2], tokens[3], tokens[4] ) );
 }
 
-void CVMachine::createRegs( const vector<unsigned int>& tokens )
+void CVMachine::processProgramm()
 {
-	assert( tokens.size() == 5 );
-	code.push_back( CRegs( tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]) );
-	if( tokens[0] == 1 ) {
-		processIPRegs( tokens );
+	while( !stop ) {
+		processRegs( code[current] );
 	}
-	if( tokens[0] == 2 ) {
-		processMOVRegs( tokens );
+}
+
+void CVMachine::processRegs( CRegs& regs )
+{
+	unsigned int cmd = regs.getCMD();
+	if( cmd == 1 ) {
+		processIPRegs( regs );
 	}
-	if( tokens[0] == 3 ) {
-		processSETRegs( tokens );
+	if( cmd == 2 ) {
+		processMOVRegs( regs );
 	}
-	if( tokens[0] == 4 ) {
-		processINRegs( tokens );
+	if( cmd == 3 ) {
+		processSETRegs( regs );
 	}
-	if( tokens[0] == 5 ) {
-		processOUTRegs( tokens );
+	if( cmd == 4 ) {
+		processINRegs( regs );
 	}
-	if( tokens[0] == 6 ) {
-		processINCRegs( tokens );
+	if( cmd == 5 ) {
+		processOUTRegs( regs );
 	}
-	if( tokens[0] == 7 ) {
-		processDECRegs( tokens );
+	if( cmd == 6 ) {
+		processINCRegs( regs );
 	}
-	if( tokens[0] == 8 ) {
-		processADDRegs( tokens );
+	if( cmd == 7 ) {
+		processDECRegs( regs );
 	}
-	if( tokens[0] == 9 ) {
-		processSUBRegs( tokens );
+	if( cmd == 8 ) {
+		processADDRegs( regs );
+	}
+	if( cmd == 9 ) {
+		processSUBRegs( regs );
 	}
 	//if( tokens[0] == string( "jmp" ) || tokens[0] == string( "JMP" ) ) {
 	//	processJMPRegs( tokens );
@@ -99,53 +106,92 @@ void CVMachine::createRegs( const vector<unsigned int>& tokens )
 	//if( tokens[0] == string( "label" ) || tokens[0] == string( "LABEL" ) ) {
 	//	processLABELRegs( tokens );
 	//}
-	if( tokens[0] == 15 ) {
-		processSTOPRegs( tokens );
+	if( cmd == 15 ) {
+		processSTOPRegs( regs );
 	}
 }
 
-void CVMachine::processIPRegs( const vector<unsigned int>& tokens )
+//void CVMachine::processVARRegs( const vector<unsigned int>& tokens )
+//{
+//	assert( tokens[0] == 0 );
+//	code.push_back( CRegs( tokens[0], tokens[1], tokens[2], tokens[3], tokens[4] ) );
+//}
+
+void CVMachine::processIPRegs( CRegs& regs )
 {
-	unsigned int src = tokens[4];
-	current += src;
+	unsigned int src = regs.getSRC();
 	cout << "processIPRegs ";
 	printCurrent();
+	current += src + 1;
 }
 
-void CVMachine::processMOVRegs( const vector<unsigned int>& tokens )
+void CVMachine::processMOVRegs( CRegs& regs )
 {
+	cout << "processMOVRegs ";
+	printCurrent();
+	current++;
 }
 
-void CVMachine::processSETRegs( const vector<unsigned int>& tokens )
+void CVMachine::processSETRegs( CRegs& regs )
 {
+	unsigned int dst = regs.getDST();
+	unsigned int src = regs.getSRC();
+	assert( 0 < dst );
+	assert( dst < code.size() );
+	code[dst].setSRC( src );
+	cout << "processSETRegs ";
+	printCurrent();
+	current++;
 }
 
-void CVMachine::processINRegs( const vector<unsigned int>& tokens )
+void CVMachine::processINRegs( CRegs& regs )
 {
+	cout << "processINRegs ";
+	printCurrent();
+	current++;
 }
 
-void CVMachine::processOUTRegs( const vector<unsigned int>& tokens )
+void CVMachine::processOUTRegs( CRegs& regs )
 {
+	cout << "processOUTRegs ";
+	printCurrent();
+	current++;
 }
 
-void CVMachine::processINCRegs( const vector<unsigned int>& tokens )
+void CVMachine::processINCRegs( CRegs& regs )
 {
+	cout << "processINCRegs ";
+	printCurrent();
+	current++;
 }
 
-void CVMachine::processDECRegs( const vector<unsigned int>& tokens )
+void CVMachine::processDECRegs( CRegs& regs )
 {
+	cout << "processDECRegs ";
+	printCurrent();
+	current++;
 }
 
-void CVMachine::processADDRegs( const vector<unsigned int>& tokens )
+void CVMachine::processADDRegs( CRegs& regs )
 {
+	cout << "processADDRegs ";
+	printCurrent();
+	current++;
 }
 
-void CVMachine::processSUBRegs( const vector<unsigned int>& tokens )
+void CVMachine::processSUBRegs( CRegs& regs )
 {
+	cout << "processSUBRegs ";
+	printCurrent();
+	current++;
 }
 
 
 
-void CVMachine::processSTOPRegs( const vector<unsigned int>& tokens )
+void CVMachine::processSTOPRegs( CRegs& regs )
 {
+	cout << "processSTOPRegs ";
+	printCurrent();
+	current++;
+	stop = true;
 }
