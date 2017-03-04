@@ -19,6 +19,38 @@ void CInterpreter::writeProgramm( const string & path )
 	fout.close();
 }
 
+void CInterpreter::writeByteCode( const string & path )
+{
+	//ofstream fout( path, ios::binary | ios::out );
+	//fout.write( (char*)&code, sizeof code );
+	//fout.close();
+	ofstream fout( path, ios::binary | ios::out );
+	for( int i = 0; i < code.size(); i++ ) {
+		unsigned int cmd = code[i].getCMD();
+		unsigned int dst = code[i].getDST();
+		unsigned int src = code[i].getSRC();
+		fout.write( (char*)&cmd, sizeof cmd );
+		fout.write( (char*)&dst, sizeof dst );
+		fout.write( (char*)&src, sizeof src );
+	}
+	fout.close();
+}
+
+void CInterpreter::readByteCode( const string & path )
+{
+	cout.width( 2 );
+	ifstream fin( path, ios::binary | ios::in );
+	unsigned int cmd, dst, src, i(0);
+	do {
+		fin.read( (char*)&cmd, sizeof cmd );
+		fin.read( (char*)&dst, sizeof dst );
+		fin.read( (char*)&src, sizeof src );
+		cout << i << " : " << cmd << " " << dst << " " << src << endl;
+		i++;
+	} while( cmd != unsigned int( 15 ) );
+	fin.close();
+}
+
 void CInterpreter::readProgramm( const string & path )
 {
 	vector<string> programm;
@@ -32,9 +64,9 @@ void CInterpreter::readProgramm( const string & path )
 		}
 	}
 	file.close();
-	cout << "VZ programm.size = " << programm.size() << endl;
-	cout << "VZ code.size = " << code.size() << endl;
-	printProgramm();
+	//cout << "VZ programm.size = " << programm.size() << endl;
+	//cout << "VZ code.size = " << code.size() << endl;
+	//printProgramm();
 }
 
 void CInterpreter::parseCommand( const string & line )

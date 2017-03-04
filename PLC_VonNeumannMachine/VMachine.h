@@ -19,8 +19,8 @@ public:
 	}
 	void fprint( const ofstream& fout ) { const_cast<ofstream&>(fout) << cmd << " " << dst << " " << src << endl; }
 	void setSRC( unsigned int s ) { src = s; }
-	void setDST( unsigned int d ) { assert( false ); }
-	void setCMD( unsigned int c ) { assert( false ); }
+	void setDST( unsigned int d ) { dst = d; }
+	void setCMD( unsigned int c ) { cmd = c; }
 	unsigned int  getCMD() const { return cmd; }
 	unsigned int  getDST() const { return dst; }
 	unsigned int  getSRC() const { return src; }
@@ -36,13 +36,14 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : current( 11 ) { cout << "CVMachine ";  printCurrent(); };
+	CVMachine() : current( 11 ) { /*cout << "CVMachine ";  printCurrent();*/ };
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
 	// выполняет программу
 	void processProgramm();
 	// выводит в консоль код
 	void printProgramm();
+	void readByteCode( const string & path );
 	// пишет байт-код программы в файл
 	void printCurrent() { cout << "current = " << current << endl; }
 	void writeProgramm( const string& path );

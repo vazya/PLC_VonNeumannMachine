@@ -20,10 +20,15 @@ public:
 		cout << cmd << " " << dst << " " << src << endl;
 	}
 	void fprint( const ofstream& fout ) { const_cast<ofstream&>(fout) << cmd << " " << dst << " " << src << endl; }
-	void setSRC( unsigned int src ) { src = src; }
-	void setDST( unsigned int dst ) {}
-	void setCMD( unsigned int cmd ) {}
-	void setVAR( unsigned int var ) { src = var; }private:
+	void setSRC( unsigned int s ) { src = s; }
+	void setDST( unsigned int d ) { dst = d; }
+	void setCMD( unsigned int c ) { cmd = c; }
+	void setVAR( unsigned int var ) { src = var; }
+	unsigned int  getCMD() const { return cmd; }
+	unsigned int  getDST() const { return dst; }
+	unsigned int  getSRC() const { return src; }
+
+private:
 	// ** 00 00 кодируют команду
 	unsigned int cmd;
 	// 00 ** 00 кодируют вторые две €чейки адрес применика( первый параметр )
@@ -45,6 +50,8 @@ public:
 	void printProgramm();
 	// пишет байт-код программы в файл
 	void writeProgramm( const string& path );
+	void writeByteCode( const string& path );
+	void readByteCode( const string& path );
 	// читает код программы на ассембелре
 	void readProgramm( const string& path );
 	void parseCommand( const string& line );
