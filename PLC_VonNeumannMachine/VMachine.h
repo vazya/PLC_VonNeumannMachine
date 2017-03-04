@@ -41,7 +41,10 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : current( 0 ), stop(false) { cout << "CVMachine ";  printCurrent(); };
+	CVMachine() : current( 0 ), stop(false) { 
+		//cout << "CVMachine ";  
+		//printCurrent(); 
+	};
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
 	// выполняет программу
@@ -66,7 +69,9 @@ protected:
 	void processDECRegs( CRegs& regs );
 	void processADDRegs( CRegs& regs );
 	void processSUBRegs( CRegs& regs );
-	void processJMPRegs( CRegs& regs );
+	
+	void processREPRegs( CRegs& regs );
+	//void processJMPRegs( CRegs& regs );
 
 	//void createCALLRegs( const vector<string>& tokens );
 	//void createRETRegs( const vector<string>& tokens );

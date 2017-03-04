@@ -59,10 +59,11 @@ protected:
 	void createADDRegs( const vector<string>& tokens );
 	void createSUBRegs( const vector<string>& tokens );
 
-	void createJMPRegs( const vector<string>& tokens );
-	void createCALLRegs( const vector<string>& tokens );
-	void createRETRegs( const vector<string>& tokens );
-	void createLABELRegs( const vector<string>& tokens );
+	void createREPRegs( const vector<string>& tokens );
+	//void createJMPRegs( const vector<string>& tokens );
+	//void createCALLRegs( const vector<string>& tokens );
+	//void createRETRegs( const vector<string>& tokens );
+	//void createLABELRegs( const vector<string>& tokens );
 
 	void createSTOPRegs( const vector<string>& tokens );
 

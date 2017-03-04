@@ -93,18 +93,21 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		if( tokens[0] == string( "sub" ) || tokens[0] == string( "SUB" ) ) {
 			createSUBRegs( tokens );
 		}
-		if( tokens[0] == string( "jmp" ) || tokens[0] == string( "JMP" ) ) {
-			createJMPRegs( tokens );
+		if( tokens[0] == string( "rep" ) || tokens[0] == string( "REP" ) ) {
+			createREPRegs( tokens );
 		}
-		if( tokens[0] == string( "call" ) || tokens[0] == string( "CALL" ) ) {
-			createCALLRegs( tokens );
-		}
-		if( tokens[0] == string( "ret" ) || tokens[0] == string( "RET" ) ) {
-			createRETRegs( tokens );
-		}
-		if( tokens[0] == string( "label" ) || tokens[0] == string( "LABEL" ) ) {
-			createLABELRegs( tokens );
-		}
+		//if( tokens[0] == string( "jmp" ) || tokens[0] == string( "JMP" ) ) {
+		//	createJMPRegs( tokens );
+		//}
+		//if( tokens[0] == string( "call" ) || tokens[0] == string( "CALL" ) ) {
+		//	createCALLRegs( tokens );
+		//}
+		//if( tokens[0] == string( "ret" ) || tokens[0] == string( "RET" ) ) {
+		//	createRETRegs( tokens );
+		//}
+		//if( tokens[0] == string( "label" ) || tokens[0] == string( "LABEL" ) ) {
+		//	createLABELRegs( tokens );
+		//}
 		if( tokens[0] == string( "stop" ) || tokens[0] == string( "STOP" ) ) {
 			createSTOPRegs( tokens );
 			return;
@@ -187,32 +190,38 @@ void CInterpreter::createSUBRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 9, 0, dst, 0, src ) );
 }
 
-void CInterpreter::createJMPRegs( const vector<string>& tokens )
+void CInterpreter::createREPRegs( const vector<string>& tokens )
 {
-	assert( tokens.size() == 2 );
-	unsigned int src = std::stoi( tokens[1] );
-	code.push_back( CRegs( 11, 0, 0, 0, src ) );
+	assert( tokens.size() == 3 );
+	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int src = std::stoi( tokens[2] );
+	code.push_back( CRegs( 12, 0, dst, 0, src ) );
 }
 
 
 
 
-
-
-void CInterpreter::createCALLRegs( const vector<string>& tokens )
-{
-	assert( false );
-}
-
-void CInterpreter::createRETRegs( const vector<string>& tokens )
-{
-	assert( false );
-}
-
-void CInterpreter::createLABELRegs( const vector<string>& tokens )
-{
-	assert( false );
-}
+//void CInterpreter::createJMPRegs( const vector<string>& tokens )
+//{
+//	assert( tokens.size() == 2 );
+//	unsigned int src = std::stoi( tokens[1] );
+//	code.push_back( CRegs( 11, 0, 0, 0, src ) );
+//}
+//
+//void CInterpreter::createCALLRegs( const vector<string>& tokens )
+//{
+//	assert( false );
+//}
+//
+//void CInterpreter::createRETRegs( const vector<string>& tokens )
+//{
+//	assert( false );
+//}
+//
+//void CInterpreter::createLABELRegs( const vector<string>& tokens )
+//{
+//	assert( false );
+//}
 
 void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 {

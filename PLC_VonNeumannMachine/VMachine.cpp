@@ -9,6 +9,7 @@ void CVMachine::printProgramm()
 	}
 	printCurrent();
 	cout << "code.size = " << code.size() << endl;
+	system( "pause" );
 }
 
 void CVMachine::writeProgramm( const string & path )
@@ -62,8 +63,7 @@ void CVMachine::processProgramm()
 {
 	while( !stop ) {
 		processRegs( code[current] );
-		printProgramm();
-		system( "pause" );
+		//printProgramm();
 	}
 }
 
@@ -100,8 +100,11 @@ void CVMachine::processRegs( CRegs& regs )
 	if( cmd == 9 ) {
 		processSUBRegs( regs );
 	}
-	if( cmd == 11 ) {
-		processJMPRegs( regs );
+	//if( cmd == 11 ) {
+	//	processJMPRegs( regs );
+	//}
+	if( cmd == 12 ) {
+		processREPRegs( regs );
 	}
 	if( cmd == 15 ) {
 		processSTOPRegs( regs );
@@ -110,7 +113,7 @@ void CVMachine::processRegs( CRegs& regs )
 
 void CVMachine::processVARRegs( CRegs& regs )
 {
-	cout << "programm reach vars" << endl;
+	cout << "ERROR programm reach vars" << endl;
 	processSTOPRegs( regs );
 }
 
@@ -118,8 +121,8 @@ void CVMachine::processIPRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-	cout << "processIPRegs ";
-	printCurrent();
+	//cout << "processIPRegs ";
+	//printCurrent();
 	current += src + 1;
 }
 
@@ -133,8 +136,8 @@ void CVMachine::processMOVRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[dst].setSRC( data );
 
-	cout << "processMOVRegs ";
-	printCurrent();
+	//cout << "processMOVRegs ";
+	//printCurrent();
 	current++;
 }
 
@@ -146,8 +149,8 @@ void CVMachine::processSETRegs( CRegs& regs )
 
 	code[dst].setSRC( src );
 
-	cout << "processSETRegs ";
-	printCurrent();
+	//cout << "processSETRegs ";
+	//printCurrent();
 	current++;
 }
 
@@ -160,8 +163,8 @@ void CVMachine::processINRegs( CRegs& regs )
 	cin >> data;
 	code[src].setSRC( data );
 
-	cout << "processINRegs ";
-	printCurrent();
+	//cout << "processINRegs ";
+	//printCurrent();
 	current++;
 }
 
@@ -171,10 +174,10 @@ void CVMachine::processOUTRegs( CRegs& regs )
 	check( src );
 
 	unsigned int data = code[src].getSRC();
-	cout << data << endl;
+	cout << "result = " <<  data << endl;
 
-	cout << "processOUTRegs ";
-	printCurrent();
+	//cout << "processOUTRegs ";
+	//printCurrent();
 	current++;
 }
 
@@ -186,8 +189,8 @@ void CVMachine::processINCRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC(data + 1);
 
-	cout << "processINCRegs ";
-	printCurrent();
+	//cout << "processINCRegs ";
+	//printCurrent();
 	current++;
 }
 
@@ -199,8 +202,8 @@ void CVMachine::processDECRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC( data - 1 );
 
-	cout << "processDECRegs ";
-	printCurrent();
+	//cout << "processDECRegs ";
+	//printCurrent();
 	current++;
 }
 
@@ -215,8 +218,8 @@ void CVMachine::processADDRegs( CRegs& regs )
 	unsigned int srcData = code[src].getSRC();
 	code[dst].setSRC( dstData + srcData );
 
-	cout << "processADDRegs ";
-	printCurrent();
+	//cout << "processADDRegs ";
+	//printCurrent();
 	current++;
 }
 
@@ -231,26 +234,50 @@ void CVMachine::processSUBRegs( CRegs& regs )
 	unsigned int srcData = code[src].getSRC();
 	code[dst].setSRC( dstData - srcData );
 
-	cout << "processSUBRegs ";
-	printCurrent();
+	//cout << "processSUBRegs ";
+	//printCurrent();
 	current++;
 }
 
-void CVMachine::processJMPRegs( CRegs& regs )
+void CVMachine::processREPRegs( CRegs& regs )
 {
+	unsigned int dst = regs.getDST();
+	check( dst );
 	unsigned int src = regs.getSRC();
 	check( src );
+	
+	unsigned int oldCurrent = current;
+	// проверка что мы не выйдем за пределы программы
+	check( current + dst );
 
-	cout << "processSUBRegs ";
-	printCurrent();
+	for( unsigned int i = 0; i < src; i++ ) {
+		for( unsigned j = oldCurrent + 1; j < oldCurrent + dst + 1; j++ ) {
+			current = j;
+			processRegs( code[j] );
+			//printProgramm();
+		}
+	}
 
-	current = src;
+	//cout << "processREPRegs ";
+	//printCurrent();
+	current = oldCurrent + dst + 1;
 }
+
+//void CVMachine::processJMPRegs( CRegs& regs )
+//{
+//	unsigned int src = regs.getSRC();
+//	check( src );
+//
+//	//cout << "processSUBRegs ";
+//	//printCurrent();
+//
+//	current = src;
+//}
 
 void CVMachine::processSTOPRegs( CRegs& regs )
 {
-	cout << "processSTOPRegs ";
-	printCurrent();
+	//cout << "processSTOPRegs ";
+	//printCurrent();
 	current++;
 	stop = true;
 }
