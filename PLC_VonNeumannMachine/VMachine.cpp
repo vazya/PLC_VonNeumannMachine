@@ -106,6 +106,12 @@ void CVMachine::processRegs( CRegs& regs )
 	if( cmd == 11 ) {
 		processJMPRegs( regs );
 	}
+	if( cmd == 12 ) {
+		processSHURegs( regs );
+	}
+	if( cmd == 13 ) {
+		processSHDRegs( regs );
+	}
 	if( cmd == 15 ) {
 		processSTOPRegs( regs );
 	}
@@ -266,6 +272,30 @@ void CVMachine::processJMPRegs( CRegs& regs )
 	printCurrent();
 
 	current = src;
+}
+
+void CVMachine::processSHURegs( CRegs& regs )
+{
+	unsigned int src = regs.getSRC();
+	check( src );
+	check( current - src );
+
+	cout << "processSHURegs ";
+	printCurrent();
+
+	current -= src;
+}
+
+void CVMachine::processSHDRegs( CRegs& regs )
+{
+	unsigned int src = regs.getSRC();
+	check( src );
+	check( current + src );
+
+	cout << "processSHDRegs ";
+	printCurrent();
+
+	current += src;
 }
 
 void CVMachine::processSTOPRegs( CRegs& regs )

@@ -63,6 +63,8 @@ protected:
 	void processSUBRegs( CRegs& regs );
 	void processCMPRegs( CRegs& regs );
 	void processJMPRegs( CRegs& regs );
+	void processSHURegs( CRegs& regs );
+	void processSHDRegs( CRegs& regs );
 
 	//void createCALLRegs( const vector<string>& tokens );
 	//void createRETRegs( const vector<string>& tokens );

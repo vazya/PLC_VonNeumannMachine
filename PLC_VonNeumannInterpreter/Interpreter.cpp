@@ -100,12 +100,19 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		if( cmd == string( "jmp" ) || cmd == string( "JMP" ) ) {
 			createJMPRegs( tokens );
 		}
-		if( cmd == string( "je" ) || cmd == string( "JE" ) ) {
-			createJERegs( tokens );
+		if( cmd == string( "shu" ) || cmd == string( "SHU" ) ) {
+			createSHURegs( tokens );
 		}
-		if( cmd == string( "jne" ) || cmd == string( "JNE" ) ) {
-			createJNERegs( tokens );
+		if( cmd == string( "shd" ) || cmd == string( "SHD" ) ) {
+			createSHDRegs( tokens );
 		}
+
+		//if( cmd == string( "je" ) || cmd == string( "JE" ) ) {
+		//	createJERegs( tokens );
+		//}
+		//if( cmd == string( "jne" ) || cmd == string( "JNE" ) ) {
+		//	createJNERegs( tokens );
+		//}
 		if( cmd == string( "stop" ) || cmd == string( "STOP" ) ) {
 			createSTOPRegs( tokens );
 			return;
@@ -203,19 +210,32 @@ void CInterpreter::createJMPRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 11, 0, src ) );
 }
 
-void CInterpreter::createJERegs( const vector<string>& tokens )
+void CInterpreter::createSHURegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
 	unsigned int src = std::stoi( tokens[1] );
 	code.push_back( CRegs( 12, 0, src ) );
 }
 
-void CInterpreter::createJNERegs( const vector<string>& tokens )
+void CInterpreter::createSHDRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
 	unsigned int src = std::stoi( tokens[1] );
 	code.push_back( CRegs( 13, 0, src ) );
 }
+//void CInterpreter::createJERegs( const vector<string>& tokens )
+//{
+//	assert( tokens.size() == 2 );
+//	unsigned int src = std::stoi( tokens[1] );
+//	code.push_back( CRegs( 12, 0, src ) );
+//}
+//
+//void CInterpreter::createJNERegs( const vector<string>& tokens )
+//{
+//	assert( tokens.size() == 2 );
+//	unsigned int src = std::stoi( tokens[1] );
+//	code.push_back( CRegs( 13, 0, src ) );
+//}
 
 void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 {

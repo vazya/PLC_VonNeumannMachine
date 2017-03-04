@@ -62,8 +62,11 @@ protected:
 	void createSUBRegs( const vector<string>& tokens );
 	void createCMPRegs( const vector<string>& tokens );
 	void createJMPRegs( const vector<string>& tokens );
-	void createJERegs( const vector<string>& tokens );
-	void createJNERegs( const vector<string>& tokens );
+	void createSHURegs( const vector<string>& tokens );
+	void createSHDRegs( const vector<string>& tokens );
+
+	//void createJERegs( const vector<string>& tokens );
+	//void createJNERegs( const vector<string>& tokens );
 	
 	//void createLABELRegs( const vector<string>& tokens );
 
