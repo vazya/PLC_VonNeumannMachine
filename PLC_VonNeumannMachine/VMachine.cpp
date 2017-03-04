@@ -180,7 +180,7 @@ void CVMachine::processOUTRegs( CRegs& regs )
 	check( src );
 
 	unsigned int data = code[src].getSRC();
-	cout << data << endl;
+	cout << endl << endl << endl << "VZ result = " << data << endl << endl << endl << endl << endl;
 
 	cout << "processOUTRegs ";
 	printCurrent();

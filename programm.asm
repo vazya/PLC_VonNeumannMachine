@@ -1,6 +1,21 @@
 ip 5
+set 5 0
+set 6 1
+set 7 2
 set 12 0
 in 13
+cmp 13 5
+shd 3
+out 5
+shd 22
+cmp 13 6
+shd 3
+out 6
+shd 18
+cmp 13 7
+shd 3
+out 6
+shd 14
 dec 13
 dec 13
 set 14 1
