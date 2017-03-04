@@ -6,34 +6,30 @@
 #include <cassert>
 using namespace std;
 
-// четрые €чейки вида 01 23 34 56 78
+// четрые €чейки вида 01 03 05
 class CRegs {
 public:
-	CRegs() : cmd( 0 ), dst1( 0 ), dst2( 0 ), src1( 0 ), src2( 0 ) {}
-	CRegs( unsigned int c, unsigned int d1, unsigned int d2, unsigned int s1, unsigned int s2 ) :
-		cmd( c ), dst1( d1 ), dst2( d2 ), src1( s1 ), src2( s2 )
+	CRegs() : cmd( 0 ), dst( 0 ), src( 0 ) {}
+	CRegs( unsigned int c, unsigned int d, unsigned int s ) :
+		cmd( c ), dst( d ), src( s )
 	{
 	}
 	void print()
 	{
 		cout.width( 2 );
-		cout << cmd << " " << dst1 << " " << dst2 << " " << src1 << " " << src2 << endl;
+		cout << cmd << " " << dst << " " << src << endl;
 	}
-	void fprint( const ofstream& fout ) { const_cast<ofstream&>(fout) << cmd << " " << dst1 << " " << dst2 << " " << src1 << " " << src2 << endl; }
-	void setSRC( unsigned int src ) { src2 = src; }
+	void fprint( const ofstream& fout ) { const_cast<ofstream&>(fout) << cmd << " " << dst << " " << src << endl; }
+	void setSRC( unsigned int src ) { src = src; }
 	void setDST( unsigned int dst ) {}
 	void setCMD( unsigned int cmd ) {}
-	void setVAR( unsigned int var ) { src2 = var; }private:
-	// ** 00 00 00 00 кодируют команду
+	void setVAR( unsigned int var ) { src = var; }private:
+	// ** 00 00 кодируют команду
 	unsigned int cmd;
-	// 00 ** 00 00 00 кодируют первые две €чейки адреса применика( первый параметр )
-	unsigned int dst1;
-	// 00 00 ** 00 00 кодируют вторые две €чейки адрес применика( первый параметр )
-	unsigned int dst2;
-	// 00 00 00 ** 00 кодируют первые две €чейки адреса источника( второй параметр )
-	unsigned int src1;
-	// 00 00 00 00 ** кодируют вторые две €чейки адреса источника( второй параметр )
-	unsigned int src2;
+	// 00 ** 00 кодируют вторые две €чейки адрес применика( первый параметр )
+	unsigned int dst;
+	// 00 00 ** кодируют вторые две €чейки адреса источника( второй параметр )
+	unsigned int src;
 };
 
 

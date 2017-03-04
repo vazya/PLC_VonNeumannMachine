@@ -54,8 +54,8 @@ void CVMachine::parseCommand( const string & line )
 		}
 		counter++;
 	}
-	assert( tokens.size() == 5 );
-	code.push_back( CRegs( tokens[0], tokens[1], tokens[2], tokens[3], tokens[4] ) );
+	assert( tokens.size() == 3 );
+	code.push_back( CRegs( tokens[0], tokens[1], tokens[2] ) );
 }
 
 void CVMachine::processProgramm()

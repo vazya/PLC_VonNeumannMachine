@@ -66,46 +66,47 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 	if( tokens.empty() ) {
 		assert( false );
 	} else {
-		if( tokens[0] == string( "ip" ) || tokens[0] == string( "IP" ) ) {
+		string cmd = tokens[0];
+		if( cmd == string( "ip" ) || cmd == string( "IP" ) ) {
 			createIPRegs( tokens );
 		}
-		if( tokens[0] == string( "mov" ) || tokens[0] == string( "MOV" ) ) {
+		if( cmd == string( "mov" ) || cmd == string( "MOV" ) ) {
 			createMOVRegs( tokens );
 		}
-		if( tokens[0] == string( "set" ) || tokens[0] == string( "SET" ) ) {
+		if( cmd == string( "set" ) || cmd == string( "SET" ) ) {
 			createSETRegs( tokens );
 		}
-		if( tokens[0] == string( "in" ) || tokens[0] == string( "IN" ) ) {
+		if( cmd == string( "in" ) || cmd == string( "IN" ) ) {
 			createINRegs( tokens );
 		}
-		if( tokens[0] == string( "out" ) || tokens[0] == string( "OUT" ) ) {
+		if( cmd == string( "out" ) || cmd == string( "OUT" ) ) {
 			createOUTRegs( tokens );
 		}
-		if( tokens[0] == string( "inc" ) || tokens[0] == string( "INC" ) ) {
+		if( cmd == string( "inc" ) || cmd == string( "INC" ) ) {
 			createINCRegs( tokens );
 		}
-		if( tokens[0] == string( "dec" ) || tokens[0] == string( "DEC" ) ) {
+		if( cmd == string( "dec" ) || cmd == string( "DEC" ) ) {
 			createDECRegs( tokens );
 		}
-		if( tokens[0] == string( "add" ) || tokens[0] == string( "ADD" ) ) {
+		if( cmd == string( "add" ) || cmd == string( "ADD" ) ) {
 			createADDRegs( tokens );
 		}
-		if( tokens[0] == string( "sub" ) || tokens[0] == string( "SUB" ) ) {
+		if( cmd == string( "sub" ) || cmd == string( "SUB" ) ) {
 			createSUBRegs( tokens );
 		}
-		if( tokens[0] == string( "jmp" ) || tokens[0] == string( "JMP" ) ) {
+		if( cmd == string( "jmp" ) || cmd == string( "JMP" ) ) {
 			createJMPRegs( tokens );
 		}
-		if( tokens[0] == string( "call" ) || tokens[0] == string( "CALL" ) ) {
+		if( cmd == string( "call" ) || cmd == string( "CALL" ) ) {
 			createCALLRegs( tokens );
 		}
-		if( tokens[0] == string( "ret" ) || tokens[0] == string( "RET" ) ) {
+		if( cmd == string( "ret" ) || cmd == string( "RET" ) ) {
 			createRETRegs( tokens );
 		}
-		if( tokens[0] == string( "label" ) || tokens[0] == string( "LABEL" ) ) {
+		if( cmd == string( "label" ) || cmd == string( "LABEL" ) ) {
 			createLABELRegs( tokens );
 		}
-		if( tokens[0] == string( "stop" ) || tokens[0] == string( "STOP" ) ) {
+		if( cmd == string( "stop" ) || cmd == string( "STOP" ) ) {
 			createSTOPRegs( tokens );
 			return;
 		}
@@ -121,7 +122,7 @@ void CInterpreter::createIPRegs( const vector<string>& tokens )
 	if( p > 255 ) {
 		p = 255;
 	}
-	code.push_back( CRegs( 1, 0, 0, 0, p ) );
+	code.push_back( CRegs( 1, 0, p ) );
 	for( int i = 0; i < p; i++ ) {
 		code.push_back( CRegs() );
 	}
@@ -132,7 +133,7 @@ void CInterpreter::createMOVRegs( const vector<string>& tokens )
 	assert( tokens.size() == 3 );
 	unsigned int dst = std::stoi( tokens[1] );
 	unsigned int src = std::stoi( tokens[2] );
-	code.push_back( CRegs( 2, 0, dst, 0, src ) );
+	code.push_back( CRegs( 2, dst, src ) );
 }
 
 void CInterpreter::createSETRegs( const vector<string>& tokens )
@@ -140,35 +141,35 @@ void CInterpreter::createSETRegs( const vector<string>& tokens )
 	assert( tokens.size() == 3 );
 	unsigned int dst = std::stoi( tokens[1] );
 	unsigned int src = std::stoi( tokens[2] );
-	code.push_back( CRegs( 3, 0, dst, 0, src ) );
+	code.push_back( CRegs( 3, dst, src ) );
 }
 
 void CInterpreter::createINRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
 	unsigned int src = std::stoi( tokens[1] );
-	code.push_back( CRegs( 4, 0, 0, 0, src ) );
+	code.push_back( CRegs( 4, 0, src ) );
 }
 
 void CInterpreter::createOUTRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
 	unsigned int src = std::stoi( tokens[1] );
-	code.push_back( CRegs( 5, 0, 0, 0, src ) );
+	code.push_back( CRegs( 5, 0, src ) );
 }
 
 void CInterpreter::createINCRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
 	unsigned int dst = std::stoi( tokens[1] );
-	code.push_back( CRegs( 6, 0, 0, 0, dst ) );
+	code.push_back( CRegs( 6, 0, dst ) );
 }
 
 void CInterpreter::createDECRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
 	unsigned int dst = std::stoi( tokens[1] );
-	code.push_back( CRegs( 7, 0, 0, 0, dst ) );
+	code.push_back( CRegs( 7, 0, dst ) );
 }
 
 void CInterpreter::createADDRegs( const vector<string>& tokens )
@@ -176,7 +177,7 @@ void CInterpreter::createADDRegs( const vector<string>& tokens )
 	assert( tokens.size() == 3 );
 	unsigned int dst = std::stoi( tokens[1] );
 	unsigned int src = std::stoi( tokens[2] );
-	code.push_back( CRegs( 8, 0, dst, 0, src ) );
+	code.push_back( CRegs( 8, dst, src ) );
 }
 
 void CInterpreter::createSUBRegs( const vector<string>& tokens )
@@ -184,17 +185,15 @@ void CInterpreter::createSUBRegs( const vector<string>& tokens )
 	assert( tokens.size() == 3 );
 	unsigned int dst = std::stoi( tokens[1] );
 	unsigned int src = std::stoi( tokens[2] );
-	code.push_back( CRegs( 9, 0, dst, 0, src ) );
+	code.push_back( CRegs( 9, dst, src ) );
 }
 
 void CInterpreter::createJMPRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
 	unsigned int src = std::stoi( tokens[1] );
-	code.push_back( CRegs( 11, 0, 0, 0, src ) );
+	code.push_back( CRegs( 11, 0, src ) );
 }
-
-
 
 
 
@@ -217,6 +216,6 @@ void CInterpreter::createLABELRegs( const vector<string>& tokens )
 void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 1 );
-	code.push_back( CRegs( 15, 0, 0, 0, 0 ) );
+	code.push_back( CRegs( 15, 0, 0 ) );
 }
 
