@@ -94,17 +94,17 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		if( cmd == string( "sub" ) || cmd == string( "SUB" ) ) {
 			createSUBRegs( tokens );
 		}
+		if( cmd == string( "cmp" ) || cmd == string( "CMP" ) ) {
+			createCMPRegs( tokens );
+		}
 		if( cmd == string( "jmp" ) || cmd == string( "JMP" ) ) {
 			createJMPRegs( tokens );
 		}
-		if( cmd == string( "call" ) || cmd == string( "CALL" ) ) {
-			createCALLRegs( tokens );
+		if( cmd == string( "je" ) || cmd == string( "JE" ) ) {
+			createJERegs( tokens );
 		}
-		if( cmd == string( "ret" ) || cmd == string( "RET" ) ) {
-			createRETRegs( tokens );
-		}
-		if( cmd == string( "label" ) || cmd == string( "LABEL" ) ) {
-			createLABELRegs( tokens );
+		if( cmd == string( "jne" ) || cmd == string( "JNE" ) ) {
+			createJNERegs( tokens );
 		}
 		if( cmd == string( "stop" ) || cmd == string( "STOP" ) ) {
 			createSTOPRegs( tokens );
@@ -188,6 +188,14 @@ void CInterpreter::createSUBRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 9, dst, src ) );
 }
 
+void CInterpreter::createCMPRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 3 );
+	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int src = std::stoi( tokens[2] );
+	code.push_back( CRegs( 10, dst, src ) );
+}
+
 void CInterpreter::createJMPRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
@@ -195,22 +203,18 @@ void CInterpreter::createJMPRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 11, 0, src ) );
 }
 
-
-
-
-void CInterpreter::createCALLRegs( const vector<string>& tokens )
+void CInterpreter::createJERegs( const vector<string>& tokens )
 {
-	assert( false );
+	assert( tokens.size() == 2 );
+	unsigned int src = std::stoi( tokens[1] );
+	code.push_back( CRegs( 12, 0, src ) );
 }
 
-void CInterpreter::createRETRegs( const vector<string>& tokens )
+void CInterpreter::createJNERegs( const vector<string>& tokens )
 {
-	assert( false );
-}
-
-void CInterpreter::createLABELRegs( const vector<string>& tokens )
-{
-	assert( false );
+	assert( tokens.size() == 2 );
+	unsigned int src = std::stoi( tokens[1] );
+	code.push_back( CRegs( 13, 0, src ) );
 }
 
 void CInterpreter::createSTOPRegs( const vector<string>& tokens )

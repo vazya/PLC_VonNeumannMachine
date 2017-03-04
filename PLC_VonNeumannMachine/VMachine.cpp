@@ -60,7 +60,7 @@ void CVMachine::parseCommand( const string & line )
 
 void CVMachine::processProgramm()
 {
-	while( !stop ) {
+	while( current > 0 ) {
 		processRegs( code[current] );
 		printProgramm();
 		system( "pause" );
@@ -99,6 +99,9 @@ void CVMachine::processRegs( CRegs& regs )
 	}
 	if( cmd == 9 ) {
 		processSUBRegs( regs );
+	}
+	if( cmd == 10 ) {
+		processCMPRegs( regs );
 	}
 	if( cmd == 11 ) {
 		processJMPRegs( regs );
@@ -236,12 +239,30 @@ void CVMachine::processSUBRegs( CRegs& regs )
 	current++;
 }
 
+void CVMachine::processCMPRegs( CRegs& regs )
+{
+	unsigned int dst = regs.getDST();
+	check( dst );
+	unsigned int src = regs.getSRC();
+	check( src );
+
+	unsigned int dstData = code[dst].getSRC();
+	unsigned int srcData = code[src].getSRC();
+	if( dstData == srcData) {
+		current++;
+	}
+
+	cout << "processCMPRegs ";
+	printCurrent();
+	current++;
+}
+
 void CVMachine::processJMPRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
 
-	cout << "processSUBRegs ";
+	cout << "processJMPRegs ";
 	printCurrent();
 
 	current = src;
@@ -251,6 +272,5 @@ void CVMachine::processSTOPRegs( CRegs& regs )
 {
 	cout << "processSTOPRegs ";
 	printCurrent();
-	current++;
-	stop = true;
+	current = 0;
 }

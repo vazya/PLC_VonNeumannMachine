@@ -35,6 +35,12 @@ public:
 
 class CInterpreter {
 public:
+	CInterpreter()
+	{
+		for( int i = 0; i <= 10; i++ ) {
+			code.push_back( CRegs() );
+		}
+	}
 	// выводит в консоль код
 	void printProgramm();
 	// пишет байт-код программы в файл
@@ -54,11 +60,12 @@ protected:
 	void createDECRegs( const vector<string>& tokens );
 	void createADDRegs( const vector<string>& tokens );
 	void createSUBRegs( const vector<string>& tokens );
-
+	void createCMPRegs( const vector<string>& tokens );
 	void createJMPRegs( const vector<string>& tokens );
-	void createCALLRegs( const vector<string>& tokens );
-	void createRETRegs( const vector<string>& tokens );
-	void createLABELRegs( const vector<string>& tokens );
+	void createJERegs( const vector<string>& tokens );
+	void createJNERegs( const vector<string>& tokens );
+	
+	//void createLABELRegs( const vector<string>& tokens );
 
 	void createSTOPRegs( const vector<string>& tokens );
 

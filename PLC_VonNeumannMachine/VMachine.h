@@ -6,7 +6,7 @@
 #include <cassert>
 using namespace std;
 
-// четрые €чейки вида 01 04 05
+// три €чейки вида 01 04 05
 class CRegs {
 public:
 	CRegs() : cmd( 0 ), dst( 0 ), src( 0 ) {}
@@ -36,7 +36,7 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : current( 0 ), stop(false) { cout << "CVMachine ";  printCurrent(); };
+	CVMachine() : current( 11 ) { cout << "CVMachine ";  printCurrent(); };
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
 	// выполн€ет программу
@@ -61,6 +61,7 @@ protected:
 	void processDECRegs( CRegs& regs );
 	void processADDRegs( CRegs& regs );
 	void processSUBRegs( CRegs& regs );
+	void processCMPRegs( CRegs& regs );
 	void processJMPRegs( CRegs& regs );
 
 	//void createCALLRegs( const vector<string>& tokens );
@@ -70,7 +71,6 @@ protected:
 	void processSTOPRegs( CRegs& regs );
 
 private:
-	bool stop;
 	// номер текущей команды
 	unsigned int current;
 	vector<CRegs> code;
