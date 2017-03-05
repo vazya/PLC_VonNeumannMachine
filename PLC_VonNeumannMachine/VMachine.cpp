@@ -13,15 +13,13 @@ void CVMachine::printProgramm()
 
 void CVMachine::readByteCode( const string & path )
 {
-	cout.width( 2 );
 	ifstream fin( path, ios::binary | ios::in );
-	unsigned int cmd, dst, src, i( 0 );
+	unsigned int cmd, dst, src;
 	do {
 		fin.read( (char*)&cmd, sizeof cmd );
 		fin.read( (char*)&dst, sizeof dst );
 		fin.read( (char*)&src, sizeof src );
-		cout << i << " : " << cmd << " " << dst << " " << src << endl;
-		i++;
+		code.push_back( CRegs(cmd, dst, src) );
 	} while( cmd != unsigned int( 15 ) );
 	fin.close();
 }
@@ -127,6 +125,9 @@ void CVMachine::processRegs( CRegs& regs )
 	if( cmd == 13 ) {
 		processSHDRegs( regs );
 	}
+	if( cmd == 14 ) {
+		processOUTCRegs( regs );
+	}
 	if( cmd == 15 ) {
 		processSTOPRegs( regs );
 	}
@@ -180,7 +181,7 @@ void CVMachine::processINRegs( CRegs& regs )
 	unsigned int src = regs.getSRC();
 	
 	unsigned int data = 0;
-	cout << "enter number ples = ";
+	//cout << "enter number ples = ";
 	cin >> data;
 	code[src].setSRC( data );
 
@@ -195,7 +196,7 @@ void CVMachine::processOUTRegs( CRegs& regs )
 	check( src );
 
 	unsigned int data = code[src].getSRC();
-	cout << data << endl;
+	cout << data;
 
 	//cout << "processOUTRegs ";
 	//printCurrent();
@@ -313,9 +314,20 @@ void CVMachine::processSHDRegs( CRegs& regs )
 	current += src;
 }
 
+void CVMachine::processOUTCRegs( CRegs& regs )
+{
+	unsigned int src = regs.getSRC();
+	cout << char( src );
+
+	//cout << "processOUTCRegs ";
+	//printCurrent();
+	current++;
+}
+
 void CVMachine::processSTOPRegs( CRegs& regs )
 {
 	//cout << "processSTOPRegs ";
 	//printCurrent();
+
 	current = 0;
 }

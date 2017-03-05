@@ -138,7 +138,9 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		if( cmd == string( "shd" ) || cmd == string( "SHD" ) ) {
 			createSHDRegs( tokens );
 		}
-
+		if( cmd == string( "outc" ) || cmd == string( "OUTC" ) ) {
+			createOUTCRegs( tokens );
+		}
 		//if( cmd == string( "je" ) || cmd == string( "JE" ) ) {
 		//	createJERegs( tokens );
 		//}
@@ -255,6 +257,15 @@ void CInterpreter::createSHDRegs( const vector<string>& tokens )
 	unsigned int src = std::stoi( tokens[1] );
 	code.push_back( CRegs( 13, 0, src ) );
 }
+
+void CInterpreter::createOUTCRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 2 );
+	unsigned int src = std::stoi( tokens[1] );
+	code.push_back( CRegs( 14, 0, src ) );
+}
+
+
 //void CInterpreter::createJERegs( const vector<string>& tokens )
 //{
 //	assert( tokens.size() == 2 );

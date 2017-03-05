@@ -66,7 +66,7 @@ protected:
 	void processJMPRegs( CRegs& regs );
 	void processSHURegs( CRegs& regs );
 	void processSHDRegs( CRegs& regs );
-
+	void processOUTCRegs( CRegs& regs );
 	//void createCALLRegs( const vector<string>& tokens );
 	//void createRETRegs( const vector<string>& tokens );
 	//void createLABELRegs( const vector<string>& tokens );
