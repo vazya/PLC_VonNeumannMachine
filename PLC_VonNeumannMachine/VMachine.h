@@ -52,7 +52,7 @@ public:
 	void check( unsigned int arg ) { assert( 0 <= arg ); assert( arg < code.size() ); }
 protected:
 	void processRegs( CRegs& regs );
-	void processVARRegs( CRegs& regs );
+	void processMEMRegs( CRegs& regs );
 	void processIPRegs( CRegs& regs );
 	void processMOVRegs( CRegs& regs );
 	void processSETRegs( CRegs& regs );
@@ -73,6 +73,7 @@ protected:
 
 	void processSTOPRegs( CRegs& regs );
 
+	void processVARRegs( CRegs& regs );
 private:
 	// номер текущей команды
 	unsigned int current;

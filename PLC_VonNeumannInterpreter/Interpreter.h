@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 #include <cassert>
 using namespace std;
 
@@ -79,6 +80,12 @@ protected:
 
 	void createSTOPRegs( const vector<string>& tokens );
 
+	void createVARRegs( const vector<string>& tokens );
+
+
 private:
+	bool checkVar( const string& name );
+	unsigned int getVar( const string& name );
 	vector<CRegs> code;
+	map<string, unsigned int> vars;
 };

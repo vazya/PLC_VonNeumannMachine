@@ -8,7 +8,7 @@ void CVMachine::printProgramm()
 		code[i].print();
 	}
 	printCurrent();
-	cout << "code.size = " << code.size() << endl;
+	system( "pause" );
 }
 
 void CVMachine::readByteCode( const string & path )
@@ -76,7 +76,6 @@ void CVMachine::processProgramm()
 	while( current > 0 ) {
 		processRegs( code[current] );
 		//printProgramm();
-		//system( "pause" );
 	}
 }
 
@@ -84,7 +83,7 @@ void CVMachine::processRegs( CRegs& regs )
 {
 	unsigned int cmd = regs.getCMD();
 	if( cmd == 0 ) {
-		processVARRegs( regs );
+		processMEMRegs( regs );
 	}
 	if( cmd == 1 ) {
 		processIPRegs( regs );
@@ -131,12 +130,27 @@ void CVMachine::processRegs( CRegs& regs )
 	if( cmd == 15 ) {
 		processSTOPRegs( regs );
 	}
+	if( cmd == 15 ) {
+		processSTOPRegs( regs );
+	}
+	if( cmd == 16 ) {
+		processVARRegs( regs );
+	}
+}
+
+void CVMachine::processMEMRegs( CRegs & regs )
+{
+	cout << "reach memory" << endl;
+	current++;
 }
 
 void CVMachine::processVARRegs( CRegs& regs )
 {
-	cout << "programm reach vars" << endl;
-	processSTOPRegs( regs );
+	unsigned int src = regs.getSRC();
+	check( src );
+	//cout << "processVARRegs ";
+	//printCurrent();
+	current++;
 }
 
 void CVMachine::processIPRegs( CRegs& regs )
@@ -196,7 +210,7 @@ void CVMachine::processOUTRegs( CRegs& regs )
 	check( src );
 
 	unsigned int data = code[src].getSRC();
-	cout << data;
+	cout << data << endl;
 
 	//cout << "processOUTRegs ";
 	//printCurrent();

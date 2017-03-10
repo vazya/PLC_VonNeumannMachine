@@ -151,7 +151,10 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 			createSTOPRegs( tokens );
 			return;
 		}
-
+		if( cmd == string( "var" ) || cmd == string( "VAR" ) ) {
+			createVARRegs( tokens );
+			return;
+		}
 	}
 	//cout << "VZ undefined command = " << tokens[0] << endl;
 }
@@ -172,68 +175,68 @@ void CInterpreter::createIPRegs( const vector<string>& tokens )
 void CInterpreter::createMOVRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 3 );
-	unsigned int dst = std::stoi( tokens[1] );
-	unsigned int src = std::stoi( tokens[2] );
+	unsigned int dst = getVar( tokens[1] ); // std::stoi( tokens[1] );
+	unsigned int src = getVar( tokens[2] ); // std::stoi( tokens[2] );
 	code.push_back( CRegs( 2, dst, src ) );
 }
 
 void CInterpreter::createSETRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 3 );
-	unsigned int dst = std::stoi( tokens[1] );
-	unsigned int src = std::stoi( tokens[2] );
+	unsigned int dst = getVar( tokens[1] ); // std::stoi( tokens[1] );
+	unsigned int src = getVar( tokens[2] ); // std::stoi( tokens[2] );
 	code.push_back( CRegs( 3, dst, src ) );
 }
 
 void CInterpreter::createINRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
-	unsigned int src = std::stoi( tokens[1] );
+	unsigned int src = getVar( tokens[1] ); // std::stoi( tokens[1] );
 	code.push_back( CRegs( 4, 0, src ) );
 }
 
 void CInterpreter::createOUTRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
-	unsigned int src = std::stoi( tokens[1] );
+	unsigned int src = getVar	( tokens[1] ); // std::stoi( tokens[1] );
 	code.push_back( CRegs( 5, 0, src ) );
 }
 
 void CInterpreter::createINCRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
-	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int dst = getVar( tokens[1] ); // std::stoi( tokens[1] );
 	code.push_back( CRegs( 6, 0, dst ) );
 }
 
 void CInterpreter::createDECRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 2 );
-	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int dst = getVar( tokens[1] ); // std::stoi( tokens[1] );
 	code.push_back( CRegs( 7, 0, dst ) );
 }
 
 void CInterpreter::createADDRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 3 );
-	unsigned int dst = std::stoi( tokens[1] );
-	unsigned int src = std::stoi( tokens[2] );
+	unsigned int dst = getVar( tokens[1] ); // std::stoi( tokens[1] );
+	unsigned int src = getVar( tokens[2] ); // std::stoi( tokens[2] );
 	code.push_back( CRegs( 8, dst, src ) );
 }
 
 void CInterpreter::createSUBRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 3 );
-	unsigned int dst = std::stoi( tokens[1] );
-	unsigned int src = std::stoi( tokens[2] );
+	unsigned int dst = getVar( tokens[1] ); // std::stoi( tokens[1] );
+	unsigned int src = getVar( tokens[2] ); // std::stoi( tokens[2] );
 	code.push_back( CRegs( 9, dst, src ) );
 }
 
 void CInterpreter::createCMPRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 3 );
-	unsigned int dst = std::stoi( tokens[1] );
-	unsigned int src = std::stoi( tokens[2] );
+	unsigned int dst = getVar( tokens[1] ); // std::stoi( tokens[1] );
+	unsigned int src = getVar( tokens[2] ); // std::stoi( tokens[2] );
 	code.push_back( CRegs( 10, dst, src ) );
 }
 
@@ -286,3 +289,29 @@ void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 15, 0, 0 ) );
 }
 
+bool CInterpreter::checkVar( const string & name )
+{
+	if( vars.find( name ) != vars.end() ) {
+		return true;
+	}
+	return false;
+}
+
+unsigned int CInterpreter::getVar( const string & name )
+{
+	if( checkVar( name ) ) {
+		return vars[name];
+	}
+	return unsigned int( std::stoi( name ) );
+}
+
+void CInterpreter::createVARRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 3 );
+
+	string varName = tokens[1];
+	unsigned int src = std::stoi( tokens[2] );
+	vars.insert( pair<string, unsigned int>( varName, src ) );
+
+	code.push_back( CRegs( 16, 0, src ) );
+}
