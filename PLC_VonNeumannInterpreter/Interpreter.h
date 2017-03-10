@@ -82,10 +82,22 @@ protected:
 
 	void createVARRegs( const vector<string>& tokens );
 
+	void createLABELRegs( const vector<string>& tokens );
+	void createRETRegs( const vector<string>& tokens );
+	void createCALLRegs( const vector<string>& tokens );
+
+	void restoreLabels();
 
 private:
-	bool checkVar( const string& name );
 	unsigned int getVar( const string& name );
+	unsigned int getLabelId( const string& name );
+	unsigned int getLabelSrc( unsigned int id );
+
 	vector<CRegs> code;
+	// дл€ каждой переменной хранит номер ее строки
 	map<string, unsigned int> vars;
+	// дл€ каждого лейбла хранит его id
+	// при первичной обработке кода в call-ах пишутс€ id лейблов
+	// при втором проходе в call простав€тс€ номера команд где начинаютс€ лейблы
+	map<string, unsigned int> labels;
 };

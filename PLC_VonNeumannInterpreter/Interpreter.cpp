@@ -58,12 +58,14 @@ void CInterpreter::readProgramm( const string & path )
 	fstream file( path );
 
 	while( getline( file, line ) ) {
+		cout << "VZ " << line << endl;
 		if( !line.empty() ) {
 			programm.push_back( line );
 			parseCommand( line );
 		}
 	}
 	file.close();
+	restoreLabels();
 	//cout << "VZ programm.size = " << programm.size() << endl;
 	//cout << "VZ code.size = " << code.size() << endl;
 	//printProgramm();
@@ -77,8 +79,8 @@ void CInterpreter::parseCommand( const string & line )
 	while( counter < line.length() ) {
 		string token;
 		char c = line[counter];
-		while( c != '\0' && c != ' ' && c != '\n' && c != '\r' && c != ',' && c != ':' ) {
-			if( c != ',' && c != ':' ) {
+		while( c != '\0' && c != ' ' && c != '\n' && c != '\r' && c != ',' && c != '	'  && c != '\t' ) {
+			if( c != ',' ) {
 				token.push_back( c );
 			}
 			counter++;
@@ -99,47 +101,65 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		assert( false );
 	} else {
 		string cmd = tokens[0];
+		if( cmd[0] == '@' ) {
+			createLABELRegs( tokens );
+			return;
+		}
 		if( cmd == string( "ip" ) || cmd == string( "IP" ) ) {
 			createIPRegs( tokens );
+			return;
 		}
 		if( cmd == string( "mov" ) || cmd == string( "MOV" ) ) {
 			createMOVRegs( tokens );
+			return;
 		}
 		if( cmd == string( "set" ) || cmd == string( "SET" ) ) {
 			createSETRegs( tokens );
+			return;
 		}
 		if( cmd == string( "in" ) || cmd == string( "IN" ) ) {
 			createINRegs( tokens );
+			return;
 		}
 		if( cmd == string( "out" ) || cmd == string( "OUT" ) ) {
 			createOUTRegs( tokens );
+			return;
 		}
 		if( cmd == string( "inc" ) || cmd == string( "INC" ) ) {
 			createINCRegs( tokens );
+			return;
 		}
 		if( cmd == string( "dec" ) || cmd == string( "DEC" ) ) {
 			createDECRegs( tokens );
+			return;
 		}
 		if( cmd == string( "add" ) || cmd == string( "ADD" ) ) {
 			createADDRegs( tokens );
+			return;
 		}
 		if( cmd == string( "sub" ) || cmd == string( "SUB" ) ) {
 			createSUBRegs( tokens );
+			return;
 		}
 		if( cmd == string( "cmp" ) || cmd == string( "CMP" ) ) {
 			createCMPRegs( tokens );
+			return;
 		}
 		if( cmd == string( "jmp" ) || cmd == string( "JMP" ) ) {
 			createJMPRegs( tokens );
+			return;
 		}
 		if( cmd == string( "shu" ) || cmd == string( "SHU" ) ) {
 			createSHURegs( tokens );
+			return;
 		}
 		if( cmd == string( "shd" ) || cmd == string( "SHD" ) ) {
 			createSHDRegs( tokens );
+			return;
 		}
 		if( cmd == string( "outc" ) || cmd == string( "OUTC" ) ) {
 			createOUTCRegs( tokens );
+			return;
 		}
 		//if( cmd == string( "je" ) || cmd == string( "JE" ) ) {
 		//	createJERegs( tokens );
@@ -153,6 +173,14 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 		}
 		if( cmd == string( "var" ) || cmd == string( "VAR" ) ) {
 			createVARRegs( tokens );
+			return;
+		}
+		if( cmd == string( "ret" ) || cmd == string( "RET" ) ) {
+			createRETRegs( tokens );
+			return;
+		}
+		if( cmd == string( "call" ) || cmd == string( "CALL" ) ) {
+			createCALLRegs( tokens );
 			return;
 		}
 	}
@@ -268,7 +296,6 @@ void CInterpreter::createOUTCRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 14, 0, src ) );
 }
 
-
 //void CInterpreter::createJERegs( const vector<string>& tokens )
 //{
 //	assert( tokens.size() == 2 );
@@ -289,17 +316,9 @@ void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 	code.push_back( CRegs( 15, 0, 0 ) );
 }
 
-bool CInterpreter::checkVar( const string & name )
-{
-	if( vars.find( name ) != vars.end() ) {
-		return true;
-	}
-	return false;
-}
-
 unsigned int CInterpreter::getVar( const string & name )
 {
-	if( checkVar( name ) ) {
+	if( vars.find( name ) != vars.end() ) {
 		return vars[name];
 	}
 	return unsigned int( std::stoi( name ) );
@@ -308,10 +327,66 @@ unsigned int CInterpreter::getVar( const string & name )
 void CInterpreter::createVARRegs( const vector<string>& tokens )
 {
 	assert( tokens.size() == 3 );
-
 	string varName = tokens[1];
-	unsigned int src = std::stoi( tokens[2] );
-	vars.insert( pair<string, unsigned int>( varName, src ) );
+	unsigned int dst = std::stoi( tokens[2] );
+	vars.insert( pair<string, unsigned int>( varName, dst ) );
+	// на втором проходе src замениться на строчку в бинарнике где лежит функция
+	code.push_back( CRegs( 16, dst, 0 ) );
+}
 
-	code.push_back( CRegs( 16, 0, src ) );
+unsigned int CInterpreter::getLabelId( const string & name )
+{
+	if( labels.find( name ) != labels.end() ) {
+		return labels[name];
+	}
+	unsigned int id = labels.size();
+	labels.insert( pair<string, unsigned int>( name, id ) );
+	return id;
+}
+
+unsigned int CInterpreter::getLabelSrc( unsigned int id )
+{
+	return 0;
+}
+
+void CInterpreter::restoreLabels()
+{
+	for( int i = 0; i < code.size(); i++ ){
+		unsigned int cmd = code[i].getCMD();
+		if( cmd == 17 ) {
+			// функция знает строчку где она находится в бинарнике
+			code[i].setSRC( i );
+			return;
+		}
+		//if( cmd == 18 ) {
+		//	// ret знает строчку где начинается функция уровня выше в бинарнике
+		//	code[i].setSRC( i );
+		//	return;
+		//}
+		if( cmd == 19 ) {
+			unsigned int id = code[i].getSRC();
+			code[i].setSRC( getLabelSrc( id ) );
+			return;
+		}
+	}
+}
+
+void CInterpreter::createLABELRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 1 );
+	unsigned int id = getLabelId( tokens[0] );
+	code.push_back( CRegs(17, id, id) );
+}
+
+void CInterpreter::createRETRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 1 );
+	code.push_back( CRegs( 18, 0, 0 ) );
+}
+
+void CInterpreter::createCALLRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 2 );
+	unsigned int id = getLabelId( tokens[1] );
+	code.push_back( CRegs( 19, 0, id ) );
 }

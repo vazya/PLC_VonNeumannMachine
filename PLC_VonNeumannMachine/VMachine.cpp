@@ -1,5 +1,26 @@
 #include "VMachine.h"
 
+void CVMachine::setCurrent( unsigned int newCurrent )
+{
+	current = newCurrent;
+}
+
+unsigned int CVMachine::getCurrent()
+{
+	return current;
+}
+
+void CVMachine::incCurrent( unsigned int shift )
+{
+	current += shift;
+}
+
+void CVMachine::decCurrent( unsigned int shift )
+{
+	current -= shift;
+}
+
+
 void CVMachine::printProgramm()
 {
 	for( int i = 0; i < code.size(); i++ ) {
@@ -135,6 +156,15 @@ void CVMachine::processRegs( CRegs& regs )
 	}
 	if( cmd == 16 ) {
 		processVARRegs( regs );
+	}
+	if( cmd == 17 ) {
+		processLABELRegs( regs );
+	}
+	if( cmd == 18 ) {
+		processRETRegs( regs );
+	}
+	if( cmd == 19 ) {
+		processCALLRegs( regs );
 	}
 }
 
@@ -344,4 +374,34 @@ void CVMachine::processSTOPRegs( CRegs& regs )
 	//printCurrent();
 
 	current = 0;
+}
+
+void CVMachine::processLABELRegs( CRegs& regs )
+{
+	//unsigned int src = regs.getSRC();
+	//cout << char( src );
+
+	//cout << "processLABELRegs ";
+	//printCurrent();
+	current++;
+}
+
+void CVMachine::processRETRegs( CRegs& regs )
+{
+	//unsigned int src = regs.getSRC();
+	//cout << char( src );
+
+	//cout << "processRETRRegs ";
+	//printCurrent();
+	current++;
+}
+
+void CVMachine::processCALLRegs( CRegs& regs )
+{
+	//unsigned int src = regs.getSRC();
+	//cout << char( src );
+
+	//cout << "processCALLRegs ";
+	//printCurrent();
+	current++;
 }

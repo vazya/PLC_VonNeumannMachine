@@ -67,15 +67,23 @@ protected:
 	void processSHURegs( CRegs& regs );
 	void processSHDRegs( CRegs& regs );
 	void processOUTCRegs( CRegs& regs );
-	//void createCALLRegs( const vector<string>& tokens );
-	//void createRETRegs( const vector<string>& tokens );
-	//void createLABELRegs( const vector<string>& tokens );
 
 	void processSTOPRegs( CRegs& regs );
 
 	void processVARRegs( CRegs& regs );
+	void processLABELRegs( CRegs& regs );
+	void processRETRegs( CRegs& regs );
+	void processCALLRegs( CRegs& regs );
+
 private:
+	void setCurrent( unsigned int newCurrent );
+	unsigned int getCurrent();
+	void incCurrent( unsigned int shift = 1 );
+	void decCurrent( unsigned int shift = 1 );
+
 	// номер текущей команды
 	unsigned int current;
+
+
 	vector<CRegs> code;
 };
