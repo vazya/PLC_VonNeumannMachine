@@ -43,7 +43,7 @@ class CInterpreter {
 public:
 	CInterpreter()
 	{
-		for( int i = 0; i <= 10; i++ ) {
+		for( int i = 0; i <= 16; i++ ) {
 			code.push_back( CRegs() );
 		}
 	}
@@ -102,4 +102,5 @@ private:
 	// при первичной обработке кода в call-ах пишутся id лейблов
 	// при втором проходе в call проставятся номера команд где начинаются лейблы
 	map<string, unsigned int> labels;
+	map<unsigned int, unsigned int> labelsIdStr;
 };

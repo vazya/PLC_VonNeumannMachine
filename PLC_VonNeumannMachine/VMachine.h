@@ -36,7 +36,8 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : instructionPointer( 11 ), stackStart(5), stackPointer(5)
+	CVMachine() : instructionPointer( 17 ), stackStart(5), stackPointer(5),
+			retPointer(0), callStackStart(10), callStackPointer(10)
 	{ /*cout << "CVMachine ";  printCurrent();*/ };
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
@@ -48,6 +49,8 @@ public:
 	// пишет байт-код программы в файл
 	void printIP() { cout << "instrictionPointer = " << instructionPointer << endl; }
 	void printSP() { cout << "stackPointer = " << stackPointer << endl; }
+	void printCSP() { cout << "callStackPointer = " << callStackPointer << endl; }
+
 	void writeProgramm( const string& path );
 	void parseCommand( const string& line );
 	// наивна€ проверка указателей
@@ -95,10 +98,30 @@ private:
 	void pop( unsigned int dst );
 	unsigned int top();
 
+	void setRetPointer( unsigned int src );
+	unsigned int getRetPointer();
+
+	void setCSP( unsigned int newCSP );
+	unsigned int getCSP();
+	void incCSP( unsigned int shift = 1 );
+	void decCSP( unsigned int shift = 1 );
+
+	void pushCallStack( unsigned int src );
+	void popCallStack();
+	unsigned int topCallStack();
+
 	// номер текущей команды
 	unsigned int instructionPointer;
+	// начало стека
 	unsigned int stackStart;
+	// указатель на верхушку стека
 	unsigned int stackPointer;
+	// зарезервированна€ €чейка под возвращаемое значение
+	unsigned int retPointer;
+	// начало call-стека
+	unsigned int callStackStart;
+	// указатель на начало call-стека
+	unsigned int callStackPointer;
 
 	vector<CRegs> code;
 };

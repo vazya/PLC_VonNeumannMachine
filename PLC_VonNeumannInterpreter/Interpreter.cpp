@@ -58,7 +58,7 @@ void CInterpreter::readProgramm( const string & path )
 	fstream file( path );
 
 	while( getline( file, line ) ) {
-		cout << "VZ " << line << endl;
+		//cout << "VZ " << line << endl;
 		if( !line.empty() ) {
 			programm.push_back( line );
 			parseCommand( line );
@@ -79,8 +79,8 @@ void CInterpreter::parseCommand( const string & line )
 	while( counter < line.length() ) {
 		string token;
 		char c = line[counter];
-		while( c != '\0' && c != ' ' && c != '\n' && c != '\r' && c != ',' && c != '	'  && c != '\t' ) {
-			if( c != ',' ) {
+		while( c != '\0' && c != ' ' && c != '\n' && c != '\r' && c != ',' && c != ':' && c != '	'  && c != '\t' ) {
+			if( c != ',' && c != ':') {
 				token.push_back( c );
 			}
 			counter++;
@@ -354,17 +354,22 @@ unsigned int CInterpreter::getLabelId( const string & name )
 
 unsigned int CInterpreter::getLabelSrc( unsigned int id )
 {
-	return 0;
+	if( labelsIdStr.find( id ) == labelsIdStr.end() ) {
+		// вызвали функцию с несуществующим id
+		assert( false );
+	}
+	return labelsIdStr[id];
 }
 
 void CInterpreter::restoreLabels()
 {
-	for( int i = 0; i < code.size(); i++ ){
+	for( int i = 0; i < code.size(); i++ ) {
 		unsigned int cmd = code[i].getCMD();
 		if( cmd == 17 ) {
+			unsigned int id = code[i].getSRC();
 			// функция знает строчку где она находится в бинарнике
 			code[i].setSRC( i );
-			return;
+			labelsIdStr.insert( pair<unsigned int, unsigned int>( id, i ) );
 		}
 		//if( cmd == 18 ) {
 		//	// ret знает строчку где начинается функция уровня выше в бинарнике
@@ -374,7 +379,6 @@ void CInterpreter::restoreLabels()
 		if( cmd == 19 ) {
 			unsigned int id = code[i].getSRC();
 			code[i].setSRC( getLabelSrc( id ) );
-			return;
 		}
 	}
 }

@@ -1,5 +1,7 @@
 ip 5
-set 12 777
+var a 18
+set a 777
+shd 10
 @printRes:
 	outc 114
 	outc 101
@@ -7,11 +9,9 @@ set 12 777
 	outc 32
 	outc 61
 	outc 32
-	out 12
+	out a
 	ret
 call @printRes	
-set 12 666
+set a 666
 call @printRes
-push 12
-pop 13
 stop

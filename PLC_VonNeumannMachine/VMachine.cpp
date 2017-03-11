@@ -42,8 +42,8 @@ void CVMachine::decSP( unsigned int shift )
 
 void CVMachine::push( unsigned int src )
 {
-	code[stackPointer].setSRC( src );
 	incSP();
+	code[stackPointer].setSRC( src );
 }
 
 void CVMachine::pop( unsigned int dst )
@@ -56,6 +56,53 @@ void CVMachine::pop( unsigned int dst )
 unsigned int CVMachine::top()
 {
 	return code[stackPointer].getSRC();
+}
+
+void CVMachine::setRetPointer( unsigned int src )
+{
+	retPointer = src;
+}
+
+unsigned int CVMachine::getRetPointer()
+{
+	return retPointer;
+}
+
+void CVMachine::setCSP( unsigned int newCSP )
+{
+	callStackPointer = newCSP;
+}
+
+unsigned int CVMachine::getCSP()
+{
+	return callStackPointer;
+}
+
+void CVMachine::incCSP( unsigned int shift )
+{
+	callStackPointer += shift;
+}
+
+void CVMachine::decCSP( unsigned int shift )
+{
+	callStackPointer -= shift;
+}
+
+void CVMachine::pushCallStack( unsigned int src )
+{
+	incCSP();
+	code[callStackPointer].setSRC( src );
+}
+
+void CVMachine::popCallStack()
+{
+	code[callStackPointer].setSRC( 0 );
+	decCSP();
+}
+
+unsigned int CVMachine::topCallStack()
+{
+	return code[callStackPointer].getSRC();
 }
 
 void CVMachine::printProgramm()
@@ -221,8 +268,6 @@ void CVMachine::processVARRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-	//cout << "processVARRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -230,8 +275,6 @@ void CVMachine::processIPRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-	//cout << "processIPRegs ";
-	//printCurrent();
 	instructionPointer += src + 1;
 }
 
@@ -245,8 +288,6 @@ void CVMachine::processMOVRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[dst].setSRC( data );
 
-	//cout << "processMOVRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -258,8 +299,6 @@ void CVMachine::processSETRegs( CRegs& regs )
 
 	code[dst].setSRC( src );
 
-	//cout << "processSETRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -268,12 +307,9 @@ void CVMachine::processINRegs( CRegs& regs )
 	unsigned int src = regs.getSRC();
 	
 	unsigned int data = 0;
-	//cout << "enter number ples = ";
 	cin >> data;
 	code[src].setSRC( data );
 
-	//cout << "processINRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -285,8 +321,6 @@ void CVMachine::processOUTRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	cout << data << endl;
 
-	//cout << "processOUTRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -298,8 +332,6 @@ void CVMachine::processINCRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC(data + 1);
 
-	//cout << "processINCRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -311,8 +343,6 @@ void CVMachine::processDECRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC( data - 1 );
 
-	//cout << "processDECRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -327,8 +357,6 @@ void CVMachine::processADDRegs( CRegs& regs )
 	unsigned int srcData = code[src].getSRC();
 	code[dst].setSRC( dstData + srcData );
 
-	//cout << "processADDRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -343,8 +371,6 @@ void CVMachine::processSUBRegs( CRegs& regs )
 	unsigned int srcData = code[src].getSRC();
 	code[dst].setSRC( dstData - srcData );
 
-	//cout << "processSUBRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -361,8 +387,6 @@ void CVMachine::processCMPRegs( CRegs& regs )
 		instructionPointer++;
 	}
 
-	//cout << "processCMPRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
@@ -370,9 +394,6 @@ void CVMachine::processJMPRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-
-	//cout << "processJMPRegs ";
-	//printCurrent();
 
 	instructionPointer = src;
 }
@@ -383,9 +404,6 @@ void CVMachine::processSHURegs( CRegs& regs )
 	check( src );
 	check( instructionPointer - src );
 
-	//cout << "processSHURegs ";
-	//printCurrent();
-
 	instructionPointer -= src;
 }
 
@@ -395,9 +413,6 @@ void CVMachine::processSHDRegs( CRegs& regs )
 	check( src );
 	check( instructionPointer + src );
 
-	//cout << "processSHDRegs ";
-	//printCurrent();
-
 	instructionPointer += src;
 }
 
@@ -406,65 +421,48 @@ void CVMachine::processOUTCRegs( CRegs& regs )
 	unsigned int src = regs.getSRC();
 	cout << char( src );
 
-	//cout << "processOUTCRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
 void CVMachine::processSTOPRegs( CRegs& regs )
 {
-	//cout << "processSTOPRegs ";
-	//printCurrent();
-
 	instructionPointer = 0;
 }
 
 void CVMachine::processLABELRegs( CRegs& regs )
 {
-	//unsigned int src = regs.getSRC();
-	//cout << char( src );
+	unsigned int src = regs.getSRC();
+	check( src );
+	unsigned int dst = regs.getDST();
 
-	//cout << "processLABELRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
 void CVMachine::processRETRegs( CRegs& regs )
 {
-	//unsigned int src = regs.getSRC();
-	//cout << char( src );
-
-	//cout << "processRETRRegs ";
-	//printCurrent();
+	// возвращает нас к предыдущей инструкции и сдвигается на одну вниз
+	setIP( getRetPointer() );
 	instructionPointer++;
 }
 
 void CVMachine::processCALLRegs( CRegs& regs )
 {
-	//unsigned int src = regs.getSRC();
-	//cout << char( src );
+	unsigned int src = regs.getSRC();
+	check( src );
 
-	//cout << "processCALLRegs ";
-	//printCurrent();
-	instructionPointer++;
+	// запомнили где находились до обработки call
+	setRetPointer( getIP() );
+	// установили текущей выполняемой инструкцией - строчку где лежит функция
+	setIP( src );
+	processRegs( code[getIP()] );
 }
 
 void CVMachine::processPUSHRegs( CRegs& regs )
 {
-	//unsigned int src = regs.getSRC();
-	//cout << char( src );
-
-	//cout << "processCALLRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
 
 void CVMachine::processPOPRegs( CRegs& regs )
 {
-	//unsigned int src = regs.getSRC();
-	//cout << char( src );
-
-	//cout << "processCALLRegs ";
-	//printCurrent();
 	instructionPointer++;
 }
