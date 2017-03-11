@@ -94,9 +94,9 @@ private:
 	void incSP( unsigned int shift = 1 );
 	void decSP( unsigned int shift = 1 );
 
-	void push( unsigned int src );
-	void pop( unsigned int dst );
-	unsigned int top();
+	void pushStack( unsigned int src );
+	void popStack( unsigned int dst );
+	unsigned int topStack();
 
 	void setRetPointer( unsigned int src );
 	unsigned int getRetPointer();

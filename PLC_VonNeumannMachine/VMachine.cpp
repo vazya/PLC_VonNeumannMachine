@@ -40,20 +40,20 @@ void CVMachine::decSP( unsigned int shift )
 	stackPointer -= shift;
 }
 
-void CVMachine::push( unsigned int src )
+void CVMachine::pushStack( unsigned int src )
 {
 	incSP();
 	code[stackPointer].setSRC( src );
 }
 
-void CVMachine::pop( unsigned int dst )
+void CVMachine::popStack( unsigned int dst )
 {
-	unsigned int src = top();
+	unsigned int src = topStack();
 	code[dst].setSRC( src );
 	decSP();
 }
 
-unsigned int CVMachine::top()
+unsigned int CVMachine::topStack()
 {
 	return code[stackPointer].getSRC();
 }
@@ -463,10 +463,21 @@ void CVMachine::processCALLRegs( CRegs& regs )
 
 void CVMachine::processPUSHRegs( CRegs& regs )
 {
+	unsigned int src = regs.getSRC();
+	check( src );
+
+	unsigned int data = code[src].getSRC();
+	pushStack( data );
+
 	instructionPointer++;
 }
 
 void CVMachine::processPOPRegs( CRegs& regs )
 {
+	unsigned int src = regs.getSRC();
+	check( src );
+
+	popStack( src );
+
 	instructionPointer++;
 }

@@ -108,6 +108,10 @@
 	
 21 pop	17	// убирает верхнее значение и складывает его в ячейку 17
 			// вид команды : 21 00 17
+			
+22 top 	18	// копирует верхнее значение и складывает его в ячейку 18
+			// вид команды : 22 00 18
+			
 ip 8
 set 1 1
 set 2 2
@@ -270,3 +274,43 @@ outc 61
 outc 32
 out 16
 stop
+
+ip 5
+var a 18
+var b 19
+set a 777
+set b 666
+push a
+push b
+shd 10
+@printRes:
+	outc 114
+	outc 101
+	outc 115
+	outc 32
+	outc 61
+	outc 32
+	var c 20
+	var d 21
+	pop c
+	pop d
+	add c d
+	out c
+	ret
+call @printRes	
+set a 666
+call @printRes
+shd 5
+@wraper:
+	set a 555
+	call @printRes
+	ret
+call @wraper
+shd 5
+@anotherWrapper:
+	set a 444
+	call @wraper
+	ret
+call @anotherWrapper
+stop
+

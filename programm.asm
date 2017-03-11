@@ -1,29 +1,24 @@
-ip 5
+ip 7
 var a 18
-set a 777
-shd 10
-@printRes:
+var b 19
+set a 7
+set b 6
+push a
+push b
+shd 15
+@sum:
 	outc 114
 	outc 101
 	outc 115
 	outc 32
 	outc 61
 	outc 32
-	out a
+	var c 20
+	var d 21
+	pop c
+	pop d
+	add c d
+	out c
 	ret
-call @printRes	
-set a 666
-call @printRes
-shd 5
-@wraper:
-	set a 555
-	call @printRes
-	ret
-call @wraper
-shd 5
-@anotherWrapper:
-	set a 444
-	call @wraper
-	ret
-call @anotherWrapper
+call @sum
 stop
