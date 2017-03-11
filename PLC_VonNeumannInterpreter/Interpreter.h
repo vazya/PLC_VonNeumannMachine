@@ -76,7 +76,6 @@ protected:
 
 	//void createJERegs( const vector<string>& tokens );
 	//void createJNERegs( const vector<string>& tokens );
-	//void createLABELRegs( const vector<string>& tokens );
 
 	void createSTOPRegs( const vector<string>& tokens );
 

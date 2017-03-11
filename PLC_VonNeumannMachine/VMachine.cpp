@@ -105,6 +105,25 @@ unsigned int CVMachine::topCallStack()
 	return code[callStackPointer].getSRC();
 }
 
+void CVMachine::setCP( bool equal )
+{
+	if( equal ) {
+		code[comparePointer].setDST( 1 );
+		code[comparePointer].setSRC( 0 );
+	} else {
+		code[comparePointer].setDST( 0 );
+		code[comparePointer].setSRC( 1 );
+	}
+}
+
+bool CVMachine::getCP()
+{
+	if( code[comparePointer].getDST() == 1 && code[comparePointer].getSRC() == 0 ) {
+		return true;
+	}
+	return false;
+}
+
 void CVMachine::printProgramm()
 {
 	for( int i = 0; i < code.size(); i++ ) {
@@ -383,19 +402,23 @@ void CVMachine::processCMPRegs( CRegs& regs )
 
 	unsigned int dstData = code[dst].getSRC();
 	unsigned int srcData = code[src].getSRC();
-	if( dstData == srcData) {
-		instructionPointer++;
-	}
+	setCP( dstData == srcData );
 
 	instructionPointer++;
 }
 
 void CVMachine::processJMPRegs( CRegs& regs )
 {
+	unsigned int dst = regs.getDST();
+	check( dst );
 	unsigned int src = regs.getSRC();
 	check( src );
 
-	instructionPointer = src;
+	if( getCP() ) {
+		instructionPointer = dst;
+	} else {
+		instructionPointer = src;
+	}
 }
 
 void CVMachine::processSHURegs( CRegs& regs )

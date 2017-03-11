@@ -46,10 +46,11 @@
 			// вид команды : 09 03 04		
 			
 10 cmp 1 2	// сравнивает значения в первой и второй ячейке
-			// если значения НЕравны переходит к выполнению строчки после cmp
-			// иначе пропускает следующую строчку и выполняет 
+			// кладет результат в специальную ячейку
 			
-11 jmp 7	// перескакивает на 7 строчку выполнения
+11 jmp 7 9	// если в специальной ячейке для сравнения true = equal
+			// то перескакивает на 7 строчку выполнения
+			// если нет то персекакивает на 9 строчку
 			// нужно учитывать начальное смещение
 			// вид команды : 11 00 07	
 
@@ -112,6 +113,31 @@
 22 top 	18	// копирует верхнее значение и складывает его в ячейку 18
 			// вид команды : 22 00 18
 			
+			
+0 nothing  	
+1 ip 12		
+2 mov 3 5	
+3 set 3 5	
+4 in 7	
+5 out 7		
+6 inc 3		
+7 dec 4
+8 add 3 2
+9 sub 3 4
+10 cmp 1 2
+11 jmp 7 9
+12 shu 3
+13 shd 3
+14 outc 5
+15 stop	
+16 var a 7	
+17	@label:
+18	ret
+19 call @label
+20 push 16
+21 pop	17
+22 top 	18
+						
 ip 8
 set 1 1
 set 2 2
@@ -314,3 +340,75 @@ shd 5
 call @anotherWrapper
 stop
 
+ip 7
+var a 18
+var b 19
+var c 20
+set a 1
+set b 1
+set c 0
+push a
+push b
+shd 8
+@sum:
+	var t 21
+	pop t
+	add c t
+	pop t
+	add c t
+	ret
+call @sum
+shd 10
+@printRes:
+	outc 114
+	outc 101
+	outc 115
+	outc 32
+	outc 61
+	outc 32
+	out c
+	ret
+call @printRes
+stop
+
+
+ip 6
+var a 18
+set a 0
+var b 19
+set b 1
+var c 20
+set c 0
+var n 21
+set n 4
+var cur 22
+set cur 0
+push a
+push b
+shd 14	
+@fib:
+	cmp n cur
+	jmp 51 40
+	var t 23
+	pop t
+	add c t
+	pop t
+	add c t
+	mov a b
+	mov b c
+	set c 0
+	inc cur
+	call @fib
+call @fib
+shd 10
+@printRes:
+	outc 114
+	outc 101
+	outc 115
+	outc 32
+	outc 61
+	outc 32
+	out a
+	ret
+call @printRes
+stop

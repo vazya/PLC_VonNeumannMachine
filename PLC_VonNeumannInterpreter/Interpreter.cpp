@@ -161,12 +161,6 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 			createOUTCRegs( tokens );
 			return;
 		}
-		//if( cmd == string( "je" ) || cmd == string( "JE" ) ) {
-		//	createJERegs( tokens );
-		//}
-		//if( cmd == string( "jne" ) || cmd == string( "JNE" ) ) {
-		//	createJNERegs( tokens );
-		//}
 		if( cmd == string( "stop" ) || cmd == string( "STOP" ) ) {
 			createSTOPRegs( tokens );
 			return;
@@ -191,6 +185,16 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 			createPOPRegs( tokens );
 			return;
 		}
+		//if( cmd == string( "top" ) || cmd == string( "TOP" ) ) {
+		//	createTOPRegs( tokens );
+		//	return;
+		//}
+		//if( cmd == string( "je" ) || cmd == string( "JE" ) ) {
+		//	createJERegs( tokens );
+		//}
+		//if( cmd == string( "jne" ) || cmd == string( "JNE" ) ) {
+		//	createJNERegs( tokens );
+		//}
 	}
 	//cout << "VZ undefined command = " << tokens[0] << endl;
 }
@@ -278,9 +282,10 @@ void CInterpreter::createCMPRegs( const vector<string>& tokens )
 
 void CInterpreter::createJMPRegs( const vector<string>& tokens )
 {
-	assert( tokens.size() == 2 );
-	unsigned int src = std::stoi( tokens[1] );
-	code.push_back( CRegs( 11, 0, src ) );
+	assert( tokens.size() == 3 );
+	unsigned int dst = std::stoi( tokens[1] );
+	unsigned int src = std::stoi( tokens[2] );
+	code.push_back( CRegs( 11, dst, src ) );
 }
 
 void CInterpreter::createSHURegs( const vector<string>& tokens )
@@ -303,20 +308,6 @@ void CInterpreter::createOUTCRegs( const vector<string>& tokens )
 	unsigned int src = std::stoi( tokens[1] );
 	code.push_back( CRegs( 14, 0, src ) );
 }
-
-//void CInterpreter::createJERegs( const vector<string>& tokens )
-//{
-//	assert( tokens.size() == 2 );
-//	unsigned int src = std::stoi( tokens[1] );
-//	code.push_back( CRegs( 12, 0, src ) );
-//}
-//
-//void CInterpreter::createJNERegs( const vector<string>& tokens )
-//{
-//	assert( tokens.size() == 2 );
-//	unsigned int src = std::stoi( tokens[1] );
-//	code.push_back( CRegs( 13, 0, src ) );
-//}
 
 void CInterpreter::createSTOPRegs( const vector<string>& tokens )
 {
@@ -416,3 +407,24 @@ void CInterpreter::createPOPRegs( const vector<string>& tokens )
 	unsigned int src = getVar( tokens[1] ); // std::stoi( tokens[1] );
 	code.push_back( CRegs( 21, 0, src ) );
 }
+
+//void CInterpreter::createTOPegs( const vector<string>& tokens )
+//{
+//	assert( tokens.size() == 2 );
+//	unsigned int src = std::stoi( tokens[1] );
+//	code.push_back( CRegs( 22, 0, src ) );
+//}
+
+//void CInterpreter::createJERegs( const vector<string>& tokens )
+//{
+//	assert( tokens.size() == 2 );
+//	unsigned int src = std::stoi( tokens[1] );
+//	code.push_back( CRegs( 23, 0, src ) );
+//}
+//
+//void CInterpreter::createJNERegs( const vector<string>& tokens )
+//{
+//	assert( tokens.size() == 2 );
+//	unsigned int src = std::stoi( tokens[1] );
+//	code.push_back( CRegs( 24, 0, src ) );
+//}

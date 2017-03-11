@@ -37,7 +37,7 @@ private:
 class CVMachine {
 public:
 	CVMachine() : instructionPointer( 17 ), stackStart(5), stackPointer(5),
-			retPointer(0), callStackStart(10), callStackPointer(10)
+			retPointer(0), callStackStart(10), callStackPointer(10), comparePointer(1)
 	{ /*cout << "CVMachine ";  printCurrent();*/ };
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
@@ -110,6 +110,9 @@ private:
 	void popCallStack();
 	unsigned int topCallStack();
 
+	void setCP( bool equal );
+	bool getCP();
+
 	// номер текущей команды
 	unsigned int instructionPointer;
 	// начало стека
@@ -123,6 +126,8 @@ private:
 	unsigned int callStackStart;
 	// указатель на начало call-стека
 	unsigned int callStackPointer;
+
+	unsigned int comparePointer;
 
 	vector<CRegs> code;
 };
