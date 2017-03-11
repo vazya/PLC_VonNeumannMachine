@@ -118,6 +118,7 @@ private:
 	unsigned int stackPointer;
 	// зарезервированна€ €чейка под возвращаемое значение
 	unsigned int retPointer;
+	// в call-стек складываем вызывающую функцию
 	// начало call-стека
 	unsigned int callStackStart;
 	// указатель на начало call-стека

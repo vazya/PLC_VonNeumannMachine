@@ -441,7 +441,9 @@ void CVMachine::processLABELRegs( CRegs& regs )
 void CVMachine::processRETRegs( CRegs& regs )
 {
 	// возвращает нас к предыдущей инструкции и сдвигается на одну вниз
-	setIP( getRetPointer() );
+	//setIP( getRetPointer() );
+	setIP( topCallStack() );
+	popCallStack();
 	instructionPointer++;
 }
 
@@ -451,7 +453,9 @@ void CVMachine::processCALLRegs( CRegs& regs )
 	check( src );
 
 	// запомнили где находились до обработки call
-	setRetPointer( getIP() );
+	//setRetPointer( getIP() );
+	pushCallStack( getIP() );
+
 	// установили текущей выполняемой инструкцией - строчку где лежит функция
 	setIP( src );
 	processRegs( code[getIP()] );

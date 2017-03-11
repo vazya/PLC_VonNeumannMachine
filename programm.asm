@@ -14,4 +14,16 @@ shd 10
 call @printRes	
 set a 666
 call @printRes
+shd 5
+@wraper:
+	set a 555
+	call @printRes
+	ret
+call @wraper
+shd 5
+@anotherWrapper:
+	set a 444
+	call @wraper
+	ret
+call @anotherWrapper
 stop
