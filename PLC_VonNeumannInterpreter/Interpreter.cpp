@@ -206,6 +206,9 @@ void CInterpreter::createIPRegs( const vector<string>& tokens )
 	if( p > 255 ) {
 		p = 255;
 	}
+	if( p < 101) {
+		p = 101;
+	}
 	code.push_back( CRegs( 1, 0, p ) );
 	for( int i = 0; i < p; i++ ) {
 		code.push_back( CRegs() );

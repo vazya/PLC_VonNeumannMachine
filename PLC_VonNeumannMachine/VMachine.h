@@ -11,9 +11,11 @@ class CRegs {
 public:
 	CRegs() : cmd( 0 ), dst( 0 ), src( 0 ) {}
 	CRegs( unsigned int c, unsigned int d, unsigned int s ) :
-		cmd( c ), dst( d ), src( s ) {}
-	void print() 
-	{ 
+		cmd( c ), dst( d ), src( s )
+	{
+	}
+	void print()
+	{
 		cout.width( 2 );
 		cout << cmd << " " << dst << " " << src << endl;
 	}
@@ -36,9 +38,10 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : instructionPointer( 17 ), stackStart(5), stackPointer(5),
-			retPointer(0), callStackStart(10), callStackPointer(10), comparePointer(1)
-	{ /*cout << "CVMachine ";  printCurrent();*/ };
+	CVMachine() : instructionPointer( 0 ), stackStart( 10 ), stackPointer( 10 ),
+		retPointer( 1 ), callStackStart( 50 ), callStackPointer( 50 ), comparePointer( 2 )
+	{ /*cout << "CVMachine ";  printCurrent();*/
+	};
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
 	// выполняет программу

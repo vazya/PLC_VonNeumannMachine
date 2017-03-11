@@ -43,9 +43,9 @@ class CInterpreter {
 public:
 	CInterpreter()
 	{
-		for( int i = 0; i <= 16; i++ ) {
-			code.push_back( CRegs() );
-		}
+		//for( int i = 0; i <= 16; i++ ) {
+		//	code.push_back( CRegs() );
+		//}
 	}
 	// выводит в консоль код
 	void printProgramm();

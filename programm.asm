@@ -1,24 +1,24 @@
-ip 10
-var a 18
+ip 101
+var a 41
 set a 0
-var b 19
+var b 42
 set b 1
-var c 20
+var c 43
 set c 0
-var n 21
+var n 44
 outc 110
 outc 32
 outc 61
 outc 32
 in n
-var cur 22
+var cur 45
 set cur 0
 push a
 push b
 shd 17	
 @fib:
 	cmp n cur
-	jmp 60 48
+	jmp 134 122
 	var t 23
 	pop t
 	add c t

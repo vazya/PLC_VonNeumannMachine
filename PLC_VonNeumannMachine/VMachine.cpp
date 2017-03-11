@@ -197,7 +197,7 @@ void CVMachine::parseCommand( const string & line )
 
 void CVMachine::processProgramm()
 {
-	while( instructionPointer > 0 ) {
+	while( instructionPointer < code.size() ) {
 		processRegs( code[instructionPointer] );
 		//printProgramm();
 	}
@@ -449,7 +449,7 @@ void CVMachine::processOUTCRegs( CRegs& regs )
 
 void CVMachine::processSTOPRegs( CRegs& regs )
 {
-	instructionPointer = 0;
+	instructionPointer++;
 }
 
 void CVMachine::processLABELRegs( CRegs& regs )
