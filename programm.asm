@@ -12,4 +12,6 @@ set 12 777
 call @printRes	
 set 12 666
 call @printRes
+push 12
+pop 13
 stop

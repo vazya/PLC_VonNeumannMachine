@@ -36,7 +36,8 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : current( 11 ) { /*cout << "CVMachine ";  printCurrent();*/ };
+	CVMachine() : instructionPointer( 11 ), stackStart(5), stackPointer(5)
+	{ /*cout << "CVMachine ";  printCurrent();*/ };
 	// считывает байт-код из фалйа
 	void readProgramm( const string& path );
 	// выполняет программу
@@ -45,7 +46,8 @@ public:
 	void printProgramm();
 	void readByteCode( const string & path );
 	// пишет байт-код программы в файл
-	void printCurrent() { cout << "current = " << current << endl; }
+	void printIP() { cout << "instrictionPointer = " << instructionPointer << endl; }
+	void printSP() { cout << "stackPointer = " << stackPointer << endl; }
 	void writeProgramm( const string& path );
 	void parseCommand( const string& line );
 	// наивная проверка указателей
@@ -75,15 +77,28 @@ protected:
 	void processRETRegs( CRegs& regs );
 	void processCALLRegs( CRegs& regs );
 
+	void processPUSHRegs( CRegs& regs );
+	void processPOPRegs( CRegs& regs );
+
 private:
-	void setCurrent( unsigned int newCurrent );
-	unsigned int getCurrent();
-	void incCurrent( unsigned int shift = 1 );
-	void decCurrent( unsigned int shift = 1 );
+	void setIP( unsigned int newIP );
+	unsigned int getIP();
+	void incIP( unsigned int shift = 1 );
+	void decIP( unsigned int shift = 1 );
+
+	void setSP( unsigned int newSP );
+	unsigned int getSP();
+	void incSP( unsigned int shift = 1 );
+	void decSP( unsigned int shift = 1 );
+
+	void push( unsigned int src );
+	void pop( unsigned int dst );
+	unsigned int top();
 
 	// номер текущей команды
-	unsigned int current;
-
+	unsigned int instructionPointer;
+	unsigned int stackStart;
+	unsigned int stackPointer;
 
 	vector<CRegs> code;
 };

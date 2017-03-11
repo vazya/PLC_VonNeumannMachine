@@ -183,6 +183,14 @@ void CInterpreter::createRegs( const vector<string>& tokens )
 			createCALLRegs( tokens );
 			return;
 		}
+		if( cmd == string( "push" ) || cmd == string( "PUSH" ) ) {
+			createPUSHRegs( tokens );
+			return;
+		}
+		if( cmd == string( "pop" ) || cmd == string( "POP" ) ) {
+			createPOPRegs( tokens );
+			return;
+		}
 	}
 	//cout << "VZ undefined command = " << tokens[0] << endl;
 }
@@ -389,4 +397,18 @@ void CInterpreter::createCALLRegs( const vector<string>& tokens )
 	assert( tokens.size() == 2 );
 	unsigned int id = getLabelId( tokens[1] );
 	code.push_back( CRegs( 19, 0, id ) );
+}
+
+void CInterpreter::createPUSHRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 2 );
+	unsigned int src = getVar( tokens[1] ); // std::stoi( tokens[1] );
+	code.push_back( CRegs( 20, 0, src ) );
+}
+
+void CInterpreter::createPOPRegs( const vector<string>& tokens )
+{
+	assert( tokens.size() == 2 );
+	unsigned int src = getVar( tokens[1] ); // std::stoi( tokens[1] );
+	code.push_back( CRegs( 21, 0, src ) );
 }

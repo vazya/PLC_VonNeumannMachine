@@ -85,8 +85,10 @@ protected:
 	void createLABELRegs( const vector<string>& tokens );
 	void createRETRegs( const vector<string>& tokens );
 	void createCALLRegs( const vector<string>& tokens );
-
 	void restoreLabels();
+
+	void createPUSHRegs( const vector<string>& tokens );
+	void createPOPRegs( const vector<string>& tokens );
 
 private:
 	unsigned int getVar( const string& name );
