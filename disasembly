@@ -1,0 +1,43 @@
+ip 0 101
+var 41 0
+set 41 0
+var 42 0
+set 42 1
+var 43 0
+set 43 0
+var 44 0
+outc 0 110
+outc 0 32
+outc 0 61
+outc 0 32
+in 0 44
+var 45 0
+set 45 0
+push 0 41
+push 0 42
+shd 0 17
+@label 0 119
+	cmp 44 45
+	jmp 134 122
+	var 23 0
+	pop 0 23
+	add 43 23
+	pop 0 23
+	add 43 23
+	mov 41 42
+	mov 42 43
+	set 43 0
+	inc 0 45
+	push 0 41
+	push 0 42
+	call 0 119
+	ret 0 0
+call 0 119
+outc 0 114
+outc 0 101
+outc 0 115
+outc 0 32
+outc 0 61
+outc 0 32
+out 0 41
+stop 0 0

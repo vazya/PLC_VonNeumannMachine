@@ -143,7 +143,7 @@ void CVMachine::readByteCode( const string & path )
 		fin.read( (char*)&cmd, sizeof cmd );
 		fin.read( (char*)&dst, sizeof dst );
 		fin.read( (char*)&src, sizeof src );
-		code.push_back( CRegs(cmd, dst, src) );
+		code.push_back( CRegs( cmd, dst, src ) );
 	} while( cmd != unsigned int( 15 ) );
 	fin.close();
 }
@@ -158,6 +158,103 @@ void CVMachine::writeProgramm( const string & path )
 	fout.close();
 }
 
+string CVMachine::disasmblyCMD( unsigned int cmd )
+{
+	string cmdStr;
+	switch( cmd ) {
+		case 1:
+			cmdStr = string( "ip" );
+			break;
+		case 2:
+			cmdStr = string( "mov" );
+			break;
+		case 3:
+			cmdStr = string( "set" );
+			break;
+		case 4:
+			cmdStr = string( "in" );
+			break;
+		case 5:
+			cmdStr = string( "out" );
+			break;
+		case 6:
+			cmdStr = string( "inc" );
+			break;
+		case 7:
+			cmdStr = string( "dec" );
+			break;
+		case 8:
+			cmdStr = string( "add" );
+			break;
+		case 9:
+			cmdStr = string( "sub" );
+			break;
+		case 10:
+			cmdStr = string( "cmp" );
+			break;
+		case 11:
+			cmdStr = string( "jmp" );
+			break;
+		case 12:
+			cmdStr = string( "shu" );
+			break;
+		case 13:
+			cmdStr = string( "shd" );
+			break;
+		case 14:
+			cmdStr = string( "outc" );
+			break;
+		case 15:
+			cmdStr = string( "stop" );
+			break;
+		case 16:
+			cmdStr = string( "var" );
+			break;
+		case 17:
+			cmdStr = string( "@label" );
+			break;
+		case 18:
+			cmdStr = string( "ret" );
+			break;
+		case 19:
+			cmdStr = string( "call" );
+			break;
+		case 20:
+			cmdStr = string( "push" );
+			break;
+		case 21:
+			cmdStr = string( "pop" );
+			break;
+	}
+	return cmdStr;
+}
+
+
+void CVMachine::disasemblyByteCode( const string & path )
+{
+	ofstream fout( path );
+	unsigned int numOfTab = 0;
+	for( int i = 0; i < code.size(); i++ ) {
+		unsigned int cmd = code[i].getCMD();
+		if( cmd != 0 ) {
+			string cmdStr = disasmblyCMD( cmd );
+			unsigned int dst = code[i].getDST();
+			unsigned int src = code[i].getSRC();
+			for( unsigned int j = 0; j < numOfTab; j++ ) {
+				fout << '	';
+			}
+			fout << cmdStr << " " << dst << " " << src << endl;
+		}
+		if( cmd == 17 ) {
+			numOfTab++;
+		}
+		if( cmd == 18 ) {
+			numOfTab--;
+		}
+	}
+	fout.close();
+}
+
 void CVMachine::readProgramm( const string & path )
 {
 	string line;
@@ -165,7 +262,7 @@ void CVMachine::readProgramm( const string & path )
 
 	while( getline( file, line ) ) {
 		if( !line.empty() ) {
-			parseCommand(line);
+			parseCommand( line );
 		}
 	}
 	file.close();
@@ -179,7 +276,7 @@ void CVMachine::parseCommand( const string & line )
 	while( counter < line.length() ) {
 		string token;
 		char c = line[counter];
-		while( c != '\0' && c != ' ' && c != '\n' && c != '\r') {
+		while( c != '\0' && c != ' ' && c != '\n' && c != '\r' ) {
 			token.push_back( c );
 			counter++;
 			c = line[counter];
@@ -303,7 +400,7 @@ void CVMachine::processMOVRegs( CRegs& regs )
 	check( dst );
 	unsigned int src = regs.getSRC();
 	check( src );
-	
+
 	unsigned int data = code[src].getSRC();
 	code[dst].setSRC( data );
 
@@ -324,7 +421,7 @@ void CVMachine::processSETRegs( CRegs& regs )
 void CVMachine::processINRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
-	
+
 	unsigned int data = 0;
 	cin >> data;
 	code[src].setSRC( data );
@@ -349,7 +446,7 @@ void CVMachine::processINCRegs( CRegs& regs )
 	check( src );
 
 	unsigned int data = code[src].getSRC();
-	code[src].setSRC(data + 1);
+	code[src].setSRC( data + 1 );
 
 	instructionPointer++;
 }

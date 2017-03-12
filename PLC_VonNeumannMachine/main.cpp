@@ -7,5 +7,6 @@ int main()
 	//vMachine.processProgramm();
 	//vMachine.printProgramm();
 	vMachine.readByteCode( "C:\\Users\\user\\Documents\\Visual Studio 2015\\Projects\\PLC_VonNeumannMachine\\bytecode" );
+	vMachine.disasemblyByteCode( "C:\\Users\\user\\Documents\\Visual Studio 2015\\Projects\\PLC_VonNeumannMachine\\disasembly" );
 	vMachine.processProgramm();
 }

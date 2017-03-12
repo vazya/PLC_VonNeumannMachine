@@ -11,7 +11,6 @@ void CInterpreter::printProgramm()
 
 void CInterpreter::writeProgramm( const string & path )
 {
-	// пока что закостылим на обычный файл
 	ofstream fout(path);
 	for( int i = 0; i < code.size(); i++ ) {
 		code[i].fprint( fout );

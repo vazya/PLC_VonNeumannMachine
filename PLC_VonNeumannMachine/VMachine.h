@@ -42,22 +42,26 @@ public:
 		retPointer( 1 ), callStackStart( 50 ), callStackPointer( 50 ), comparePointer( 2 )
 	{ /*cout << "CVMachine ";  printCurrent();*/
 	};
-	// считывает байт-код из фалйа
+	// считывает набор команд из фалйа
 	void readProgramm( const string& path );
-	// выполняет программу
-	void processProgramm();
-	// выводит в консоль код
+	// выводит в консоль набор команд
 	void printProgramm();
+
 	void readByteCode( const string & path );
-	// пишет байт-код программы в файл
+	void writeProgramm( const string& path );
+
+	void disasemblyByteCode( const string& path );
+
 	void printIP() { cout << "instrictionPointer = " << instructionPointer << endl; }
 	void printSP() { cout << "stackPointer = " << stackPointer << endl; }
 	void printCSP() { cout << "callStackPointer = " << callStackPointer << endl; }
 
-	void writeProgramm( const string& path );
+	// выполняет программу
+	void processProgramm();
 	void parseCommand( const string& line );
 	// наивная проверка указателей
 	void check( unsigned int arg ) { assert( 0 <= arg ); assert( arg < code.size() ); }
+	string disasmblyCMD( unsigned int cmd );
 protected:
 	void processRegs( CRegs& regs );
 	void processMEMRegs( CRegs& regs );
