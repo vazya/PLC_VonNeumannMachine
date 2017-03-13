@@ -2,60 +2,71 @@
 
 void CVMachine::setIP( unsigned int newIP )
 {
-	instructionPointer = newIP;
+	//instructionPointer = newIP;
+	code[1].setSRC( newIP ); 
 }
 
 unsigned int CVMachine::getIP()
 {
-	return instructionPointer;
+	//return instructionPointer;
+	return code[1].getSRC();
 }
 
 void CVMachine::incIP( unsigned int shift )
 {
-	instructionPointer += shift;
+	//instructionPointer += shift;
+	setIP( getIP() + shift );
 }
 
 void CVMachine::decIP( unsigned int shift )
 {
-	instructionPointer -= shift;
+	//instructionPointer -= shift;
+	setIP( getIP() - shift );
 }
 
 void CVMachine::setSP( unsigned int newSP )
 {
-	stackPointer = newSP;
+	//stackPointer = newSP;
+	code[10].setSRC( newSP );
 }
 
 unsigned int CVMachine::getSP()
 {
-	return stackPointer;
+	//return stackPointer;
+	return code[10].getSRC();
 }
 
 void CVMachine::incSP( unsigned int shift )
 {
-	stackPointer += shift;
+	//stackPointer += shift;
+	setSP( getSP() + shift );
 }
 
 void CVMachine::decSP( unsigned int shift )
 {
-	stackPointer -= shift;
+	//stackPointer -= shift;
+	setSP( getSP() - shift );
 }
 
 void CVMachine::pushStack( unsigned int src )
 {
 	incSP();
-	code[stackPointer].setSRC( src );
+	//code[stackPointer].setSRC( src );
+	code[getSP()].setSRC( src );
 }
 
 void CVMachine::popStack( unsigned int dst )
 {
-	unsigned int src = topStack();
-	code[dst].setSRC( src );
+	//unsigned int src = topStack();
+	//code[dst].setSRC( src );
+	code[dst].setSRC( topStack() );
 	decSP();
 }
 
 unsigned int CVMachine::topStack()
 {
-	return code[stackPointer].getSRC();
+	//return code[stackPointer].getSRC();
+	return code[getSP()].getSRC();
 }
 
 void CVMachine::setRetPointer( unsigned int src )
@@ -294,8 +305,11 @@ void CVMachine::parseCommand( const string & line )
 
 void CVMachine::processProgramm()
 {
-	while( instructionPointer < code.size() ) {
-		processRegs( code[instructionPointer] );
+	setIP( 0 );
+	setSP( 10 );
+	while( getIP() /*instructionPointer*/ < code.size() ) {
+		//processRegs( code[instructionPointer] );
+		processRegs( code[getIP()] );
 		//printProgramm();
 	}
 }

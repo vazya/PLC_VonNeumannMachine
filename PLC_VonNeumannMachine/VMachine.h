@@ -38,8 +38,8 @@ private:
 
 class CVMachine {
 public:
-	CVMachine() : instructionPointer( 0 ), stackStart( 10 ), stackPointer( 10 ),
-		retPointer( 1 ), callStackStart( 50 ), callStackPointer( 50 ), comparePointer( 2 )
+	CVMachine() : instructionPointer( 1 ), stackStart( 10 ), stackPointer( 10 ),
+		retPointer( 2 ), callStackStart( 50 ), callStackPointer( 50 ), comparePointer( 3 )
 	{ /*cout << "CVMachine ";  printCurrent();*/
 	};
 	// считывает набор команд из фалйа
