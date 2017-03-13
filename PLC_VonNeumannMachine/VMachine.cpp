@@ -578,7 +578,7 @@ void CVMachine::processCALLRegs( CRegs& regs )
 
 	// установили текущей выполняемой инструкцией - строчку где лежит функция
 	setIP( src );
-	processRegs( code[getIP()] );
+	incIP(); // processRegs( code[getIP()] );
 }
 
 void CVMachine::processPUSHRegs( CRegs& regs )
