@@ -71,12 +71,14 @@ unsigned int CVMachine::topStack()
 
 void CVMachine::setRetPointer( unsigned int src )
 {
-	retPointer = src;
+	//retPointer = src;
+	code[2].setSRC( src );
 }
 
 unsigned int CVMachine::getRetPointer()
 {
-	return retPointer;
+	//return retPointer;
+	return code[2].getSRC();
 }
 
 void CVMachine::setCSP( unsigned int newCSP )
@@ -119,17 +121,17 @@ unsigned int CVMachine::topCallStack()
 void CVMachine::setCP( bool equal )
 {
 	if( equal ) {
-		code[comparePointer].setDST( 1 );
-		code[comparePointer].setSRC( 0 );
+		code[3].setDST( 1 );
+		code[3].setSRC( 0 );
 	} else {
-		code[comparePointer].setDST( 0 );
-		code[comparePointer].setSRC( 1 );
+		code[3].setDST( 0 );
+		code[3].setSRC( 1 );
 	}
 }
 
 bool CVMachine::getCP()
 {
-	if( code[comparePointer].getDST() == 1 && code[comparePointer].getSRC() == 0 ) {
+	if( code[3].getDST() == 1 && code[3].getSRC() == 0 ) {
 		return true;
 	}
 	return false;
@@ -536,7 +538,7 @@ void CVMachine::processSHURegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-	check( instructionPointer - src );
+	check( getIP() - src );
 
 	decIP( src ); // instructionPointer -= src;
 }
@@ -545,7 +547,7 @@ void CVMachine::processSHDRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-	check( instructionPointer + src );
+	check( getIP() + src );
 
 	incIP( src ); // instructionPointer += src;
 }
