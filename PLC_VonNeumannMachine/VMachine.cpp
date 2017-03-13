@@ -377,21 +377,21 @@ void CVMachine::processRegs( CRegs& regs )
 void CVMachine::processMEMRegs( CRegs & regs )
 {
 	cout << "reach memory" << endl;
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processVARRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processIPRegs( CRegs& regs )
 {
 	unsigned int src = regs.getSRC();
 	check( src );
-	instructionPointer += src + 1;
+	incIP( src + 1 ); // instructionPointer += src + 1;
 }
 
 void CVMachine::processMOVRegs( CRegs& regs )
@@ -404,7 +404,7 @@ void CVMachine::processMOVRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[dst].setSRC( data );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processSETRegs( CRegs& regs )
@@ -415,7 +415,7 @@ void CVMachine::processSETRegs( CRegs& regs )
 
 	code[dst].setSRC( src );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processINRegs( CRegs& regs )
@@ -426,7 +426,7 @@ void CVMachine::processINRegs( CRegs& regs )
 	cin >> data;
 	code[src].setSRC( data );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processOUTRegs( CRegs& regs )
@@ -437,7 +437,7 @@ void CVMachine::processOUTRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	cout << data << endl;
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processINCRegs( CRegs& regs )
@@ -448,7 +448,7 @@ void CVMachine::processINCRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC( data + 1 );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processDECRegs( CRegs& regs )
@@ -459,7 +459,7 @@ void CVMachine::processDECRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	code[src].setSRC( data - 1 );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processADDRegs( CRegs& regs )
@@ -473,7 +473,7 @@ void CVMachine::processADDRegs( CRegs& regs )
 	unsigned int srcData = code[src].getSRC();
 	code[dst].setSRC( dstData + srcData );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processSUBRegs( CRegs& regs )
@@ -487,7 +487,7 @@ void CVMachine::processSUBRegs( CRegs& regs )
 	unsigned int srcData = code[src].getSRC();
 	code[dst].setSRC( dstData - srcData );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processCMPRegs( CRegs& regs )
@@ -501,7 +501,7 @@ void CVMachine::processCMPRegs( CRegs& regs )
 	unsigned int srcData = code[src].getSRC();
 	setCP( dstData == srcData );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processJMPRegs( CRegs& regs )
@@ -512,9 +512,9 @@ void CVMachine::processJMPRegs( CRegs& regs )
 	check( src );
 
 	if( getCP() ) {
-		instructionPointer = dst;
+		setIP( dst ); // instructionPointer = dst;
 	} else {
-		instructionPointer = src;
+		setIP( src ); // instructionPointer = src;
 	}
 }
 
@@ -524,7 +524,7 @@ void CVMachine::processSHURegs( CRegs& regs )
 	check( src );
 	check( instructionPointer - src );
 
-	instructionPointer -= src;
+	decIP( src ); // instructionPointer -= src;
 }
 
 void CVMachine::processSHDRegs( CRegs& regs )
@@ -533,7 +533,7 @@ void CVMachine::processSHDRegs( CRegs& regs )
 	check( src );
 	check( instructionPointer + src );
 
-	instructionPointer += src;
+	incIP( src ); // instructionPointer += src;
 }
 
 void CVMachine::processOUTCRegs( CRegs& regs )
@@ -541,12 +541,12 @@ void CVMachine::processOUTCRegs( CRegs& regs )
 	unsigned int src = regs.getSRC();
 	cout << char( src );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processSTOPRegs( CRegs& regs )
 {
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processLABELRegs( CRegs& regs )
@@ -555,7 +555,7 @@ void CVMachine::processLABELRegs( CRegs& regs )
 	check( src );
 	unsigned int dst = regs.getDST();
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processRETRegs( CRegs& regs )
@@ -564,7 +564,7 @@ void CVMachine::processRETRegs( CRegs& regs )
 	//setIP( getRetPointer() );
 	setIP( topCallStack() );
 	popCallStack();
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processCALLRegs( CRegs& regs )
@@ -589,7 +589,7 @@ void CVMachine::processPUSHRegs( CRegs& regs )
 	unsigned int data = code[src].getSRC();
 	pushStack( data );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
 
 void CVMachine::processPOPRegs( CRegs& regs )
@@ -599,5 +599,5 @@ void CVMachine::processPOPRegs( CRegs& regs )
 
 	popStack( src );
 
-	instructionPointer++;
+	incIP(); // instructionPointer++;
 }
